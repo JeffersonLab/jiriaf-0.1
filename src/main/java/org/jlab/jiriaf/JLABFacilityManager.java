@@ -4,11 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 
@@ -55,8 +54,14 @@ public class JLABFacilityManager implements IFacilityManager{
     public void parseJLABJsonUrl(String url) throws IOException {
         try (InputStream is = new URL(url).openStream()) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            JsonParser parser = new JsonParser();
-            JsonElement tree = parser.parse(rd);
+            String output;
+            String output2 = "";
+            while ((output = rd.readLine()) != null) {
+                output2 += output;
+            }
+            JsonReader reader = new JsonReader(new StringReader(output2));
+
+            JsonElement tree = JsonParser.parseReader(reader);
             JsonArray array = tree.getAsJsonArray();
             for (JsonElement element : array) {
                 if (element.isJsonObject()) {
