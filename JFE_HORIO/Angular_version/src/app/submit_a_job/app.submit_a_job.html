@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <title>Submit a Job</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+    <rect class="header"><a class="menu" href="/job_list"><img class="menu" src="/images/menu.png" alt=""></a>
+        <h class="logo">JIRIAF</h><a class="menuhelp" href="/job_list"><img class="note" src="/images/help.png"
+                alt=""></a><a class="menusearch" href="/job_list"><img class="note" src="/images/search.png" alt=""></a>
+    </rect>
+    <rect class="top">
+        <p class="title">Submit a Job</p>
+        <p class="cap">Add and specify a new job you want to run on JIRIAF.</p>
+    </rect>
+    <form action="/submit_a_job" method="POST">
+        <rect class="submitbody">
+            <p class="note">* Leave empty if none</p><a class="note" href="https://scicomp.jlab.org/cli/add-job.html">
+                <img class="note" src="/images/note.png" alt=""></a>
+            <rect class="form1">
+                <p class="form">Workflow</p>
+                <p class="form">Job Name</p>
+                <p class="form">Antecedent(s)</p>
+                <p class="form">Condition</p>
+                <p class="form">Feature(s)</p>
+            </rect>
+            <rect class="form2">
+                <p class="form">Number of CPUs</p>
+                <p class="form">Number of GPUs</p>
+                <p class="form">Memory</p>
+                <p class="form">Disk</p>
+                <p class="form">Exclusive</p>
+            </rect>
+            <rect class="form3">
+                <p class="form">Input</p>
+                <p class="form">Output</p>
+                <p class="form">StdIn</p>
+                <p class="form">StdOut</p>
+            </rect>
+            <rect class="form4">
+                <p class="form">Shell</p>
+                <p class="form">Site</p>
+                <p class="form">Tag</p>
+                <p class="form">Time</p>
+            </rect>
+            <rect class="res1"><input class="res" type="text" id="Workflow" name="Workflow" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Job Name" name="Job Name" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Antecedent(s)" name="Antecedent(s)" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Condition" name="Condition" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Feature(s)" name="Feature(s)" autofocus="">
+                <p class="ind"></p>
+            </rect>
+            <rect class="res2"><input class="res" type="text" id="Number of CPUs" name="Number of CPUs" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Number of GPUs" name="Number of GPUs"
+                    autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Memory" name="Memory" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Disk" name="Disk" autofocus="">
+                <p class="ind"></p><input class="cli" type="checkbox" id="Exclusive" name="Exclusive">
+            </rect>
+            <rect class="res3"><input class="res" type="text" id="Input" name="Input" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Output" name="Output" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="StdIn" name="StdIn" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="StdOut" name="StdOut" autofocus="">
+                <p class="ind"></p>
+            </rect>
+            <rect class="res4"><input class="res" type="text" id="Shell" name="Shell" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Site" name="Site" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Tag" name="Tag" autofocus="">
+                <p class="ind"></p><input class="res" type="text" id="Time" name="Time" autofocus="">
+                <p class="ind"></p>
+            </rect>
+        </rect><a class="submit" href="/submit_a_job"> <input class="submit" type="submit"></a><a class="cancel"
+            href="/job_list">
+            <rect class="cancel"></rect>
+            <p class="submit">Cancel</p>
+        </a>
+    </form>
+    <p class="submitind">H</p>
+</body>
+
+</html>

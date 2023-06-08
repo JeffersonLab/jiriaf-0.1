@@ -1,0 +1,38 @@
+extends layout
+
+block banner
+  rect.wheader
+    h.wlogo JIRIAF
+    
+  rect.wfooter
+    a.wf1(href="https://wiki.jlab.org/epsciwiki/index.php/JIRIAF_Meetings") 
+      p.wf Contact
+    a.wf2(href="https://wiki.jlab.org/epsciwiki/index.php/JIRIAF_Meetings") 
+      p.wf Term of use
+    p.wf0 Powered by Jefferson Lab
+
+block content
+  rect.login
+    p.logintitle Log in to JIRIAF
+
+    form(action='/' method="POST")
+      select.login(id='login' name='login')
+        - var list= ['Jefferson Lab','National Energy Research Scientific Computing Center']
+        option(value="" disabled selected) Choose your institution
+        each item in list
+          option(value=item) #{item}
+      
+      a.login(href="/") 
+        input.login(type='submit' value='Access through you institution                                ---->') 
+
+      input.clir(type="checkbox" id='Remember' name='Remember')
+      p.clir Remember me
+
+  rect.loginhelp
+    p.help1 Don’t have an account?
+    p.help2 Contact your home institution
+
+  rect.loginhelp2
+    p.help1 Need help?
+    a.help(href="https://wiki.jlab.org/epsciwiki/index.php/JIRIAF_Meetings") 
+      p.help3 Contact Us

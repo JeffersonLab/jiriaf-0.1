@@ -1,0 +1,75 @@
+extends layout
+
+block banner
+  rect.header
+    a.menu(href='/job_list')
+      img.menu(src="/images/menu.png", alt="")
+    h.logo JIRIAF
+    a.menuhelp(href='/job_list')
+      img.note(src="/images/help.png", alt="")
+    a.menusearch(href='/job_list')
+      img.note(src="/images/search.png", alt="")
+    
+  rect.top
+    p.title= 'Submit a Job'
+    p.cap Add and specify a new job you want to run on JIRIAF.
+
+block content
+  form(action='/submit_a_job' method="POST")
+    rect.submitbody
+      p.note * Leave empty if none
+      a.note(href="https://scicomp.jlab.org/cli/add-job.html") 
+        img.note(src="/images/note.png", alt="")
+
+      rect.form1
+        - var list1= ["Workflow", "Job Name", "Antecedent(s)", "Condition", 'Feature(s)']
+        each item in list1
+          p.form= item
+
+      rect.form2
+        - var list2= ["Number of CPUs", "Number of GPUs", "Memory", "Disk"]
+        each item in list2
+          p.form= item
+        p.form= 'Exclusive'
+
+      rect.form3
+        - var list3= ['Input','Output','StdIn','StdOut']
+        each item in list3
+          p.form= item
+
+      rect.form4
+        - var list4= ['Shell','Site','Tag','Time']
+        each item in list4
+          p.form= item
+
+      rect.res1
+        each item in list1
+          input.res(type='text' id=item name=item autofocus)
+          p.ind
+
+      rect.res2
+        each item in list2
+          input.res(type='text' id=item name=item autofocus)
+          p.ind
+        input.cli(type="checkbox" id='Exclusive' name='Exclusive')
+
+      rect.res3
+        each item in list3
+          input.res(type='text' id=item name=item autofocus)
+          p.ind
+
+      rect.res4
+        each item in list4
+          input.res(type='text' id=item name=item autofocus)
+          p.ind
+
+    - var text=10
+
+    a.submit(href="/submit_a_job") 
+      input.submit(type='submit')
+
+    a.cancel(href="/job_list") 
+      rect.cancel
+      p.submit Cancel
+  
+  p.submitind H

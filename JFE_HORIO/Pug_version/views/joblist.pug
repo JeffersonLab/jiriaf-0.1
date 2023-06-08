@@ -1,0 +1,37 @@
+extends layout
+
+block banner
+  rect.header
+    a.menu(href='/job_list')
+      img.menu(src="/images/menu.png", alt="")
+    h.logo JIRIAF
+    
+  rect.top
+    p.title= 'Jobs'
+    p.cap View the status and results of all of jobs currently running on JIRIAF.
+
+block content
+  form(action='/' method="POST")
+    rect.listbody
+      input.search(type='text' id=search name=search autofocus placeholder='      Search jobs by ID, name or tag')
+      p
+
+      rect.new
+        a.new(href='/submit_a_job')
+          p.submit Create New +
+      
+      rect.label
+      p.label1 Job ID
+      p.label2 Workflow
+      p.label3 Creator
+      p.label4 Status
+      p.label5 Created
+      p.label6 Run
+      p.label7 Compute Resource
+      p.label8 Tags
+      
+      rect.form
+        - for (var x = 0; x < 10; x++)
+          input.form(placeholder='                     <empty job>')
+
+  p.listind H
