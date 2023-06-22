@@ -1,225 +1,375 @@
 
 
-<div class="columns is-mobile is-centered mt-6 mb-6">Add and specify a new job you want to run on JIRIAF.</div>
-    <form class="form">
+<!DOCTYPE html>
+<html lang="en">
 
-        
-        <div class="columns is-mobile is-centered">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Workflow</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Workflow">
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="addjob.component.css">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="app.component.html">
+            <img src="https://jidp.jlab.org/idp/images/jlab-logo.png" width="100" height="40">
+          </a>
+      
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+      
+        <div id="navbarBasicExample" class="navbar-menu">
+          <div class="navbar-start">
+            <a class="navbar-item">
+              Home
+            </a>
+      
+           
+      
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                More
+              </a>
+      
+              <div class="navbar-dropdown">
+                <a class="navbar-item">
+                  About
+                </a>
+                <a class="navbar-item">
+                  Help
+                </a>
+                <a class="navbar-item">
+                  FAQ
+                  </a>
+                <a class="navbar-item">
+                  Contact
+                </a>
+                <hr class="navbar-divider">
+                <a class="navbar-item">
+                  Report an issue
+                </a>
               </div>
             </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-3">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Job Name</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Job Name">
-                </div>
+          </div>
+      
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <div class="buttons">
+                
+                <a class="button is-light">
+                  Log out
+                </a>
               </div>
             </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label"> Antecedent</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter  Antecedent">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Condition</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Condition">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Features</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Features">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label"> Number of gpus</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder=" Number of gpus">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Memory</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Memory">
-                </div>
-              </div>
-            </div>
-        </div>
-
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Disk</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Disk">
-                </div>
-              </div>
-            </div>
-        </div>
-
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label"> Exclusive</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Exclusive">
-                </div>
-              </div>
-            </div>
-        </div>
-
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Input</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Input">
-                </div>
-              </div>
-            </div>
-        </div>
-
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Output</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Output">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">stdin</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter stdIn">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">stdOut</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter stdOut">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Shell</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Shell">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Site</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Site">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Tag</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Tag">
-                </div>
-              </div>
-            </div>
-        </div>
-
-        <div class="columns is-mobile is-centered mt-5">
-            <div class="column is-half">
-              <div class="field">
-                <label class="label">Time</label>
-                <div class="control">
-                  <input class="input" type="text" placeholder="Enter Time">
-                </div>
-              </div>
-            </div>
-        </div>
-
-
-          
-             
-          
-               
-    
-       
-       
-    
-            
-    </form>
-
-    
-
-
-      <div class="columns is-centered">
-        <div class="column is-half is-offset-0.5" >
-          <div class="buttons">
-            <div class="control">
-                <button class="button is-link mr-6 my-6">Submit</button>
-              </div>
-              <div class="control ">
-                <button class="button is-link mr-6 my-6 is-danger ">Cancel</button>
-              </div>
           </div>
         </div>
-      </div>
+      </nav>
+    <div class="columns is-mobile is-centered mt-6 mb-6">Add and specify a new job you want to run on JIRIAF.</div>
+    <form class="form">
+    
+    
+        <div class="columns is-mobile is-centered">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Workflow</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Workflow">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-3">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Account Name</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Account Name">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-3">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Partition Name</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Partition Name">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-mobile is-centered mt-3">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Job Name</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Job Name">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label"> Antecedent</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter  Antecedent">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Condition</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Condition">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Constraint</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Features">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label"> Cores</label>
+                    <div class="control">
+                        <input class="input" type="number" min = "0" placeholder=" Number of CPU cores used">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        
+    
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <label class="label">Disk</label>
+        <div class="field has-addons">
+            
+            <p class="control is-expanded">
+              <input class="input" type="text" placeholder="Enter bytes amount">
+            </p>
+            
+            <p class="control">
+                <span class="select">
+                  <select>
+                    <option>bytes</option>
+                    <option>kilo-</option>
+                    <option>mega-</option>
+                    <option>giga-</option>
+                    <option>tera-</option>
+                   
+                  </select>
+                </span>
+              </p>
+          </div>
+          </div>
+        </div>
+    
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label"> Exclusive</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Exclusive">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Input</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Input">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Output</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Output">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Phase</label>
+                    <div class="control">
+                        <input class="input" type="number" placeholder="Enter phase">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <label class="label">Ram</label>
+        <div class="field has-addons">
+            
+            <p class="control is-expanded">
+              <input class="input" type="text" placeholder="Enter max amount of memory the process will use">
+            </p>
+            
+            <p class="control">
+                <span class="select">
+                  <select>
+                    <option>bytes</option>
+                    <option>kilo-</option>
+                    <option>mega-</option>
+                    <option>giga-</option>
+                    <option>tera-</option>
+                   
+                  </select>
+                </span>
+              </p>
+          </div>
+          </div>
+        </div>
+    
+    
+    
+      
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Shell</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Shell">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Site</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Site">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">stdOut</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Redirect standard output to file at compute site">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">stderr</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Redirect standard error to file at compute site">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <div class="field">
+                    <label class="label">Tag</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Enter Tag">
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+    
+    
+        <div class="columns is-mobile is-centered mt-5">
+            <div class="column is-half">
+                <label class="label">Time</label>
+        <div class="field has-addons">
+            
+            <p class="control is-expanded">
+              <input class="input" type="text" placeholder="Enter Time">
+            </p>
+            
+            <p class="control">
+                <span class="select">
+                  <select>
+                    <option>Seconds</option>
+                    <option>Hours</option>
+                    <option>Days</option>
+                   
+                  </select>
+                </span>
+              </p>
+          </div>
+          </div>
+        </div>
+    
+    
+    
+    
+    
+    
+    
+    </form>
+    
+    
+    
+    
+    <div class="columns is-centered">
+        <div class="column is-half is-offset-0.5">
+            <div class="buttons">
+                <div class="control">
+                    <button class="button is-link mr-6 my-6">Submit</button>
+                </div>
+                <div class="control ">
+                    <button class="button is-link mr-6 my-6 is-danger ">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
 
+</html>

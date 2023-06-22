@@ -1,0 +1,22 @@
+div.columns {
+    margin-top: 50px;
+  }
+
+  h1 {
+    
+    margin-bottom: 20px;
+
+  }
+
+  .table td {
+    font-size: 17px
+  }
+
+  .table th {
+    font-size: 17px
+  }
+
+ .table{
+    max-height: 300px; /* Adjust the height as needed */
+    overflow-y: auto;
+ }
