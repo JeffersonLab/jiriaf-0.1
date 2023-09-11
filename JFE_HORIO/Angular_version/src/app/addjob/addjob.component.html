@@ -72,7 +72,7 @@
         </div>
       </nav>
     <div class="columns is-mobile is-centered mt-6 mb-6">Add and specify a new job you want to run on JIRIAF.</div>
-    <form class="form">
+    <form class="form" (ngSubmit)="onSubmit()" >
     
     
         <div class="columns is-mobile is-centered">
@@ -80,7 +80,7 @@
                 <div class="field">
                     <label class="label">Workflow</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Workflow">
+                        <input class="input" type="text" placeholder="Enter Workflow" name="workflow" [(ngModel)]="formData.workflow">
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                 <div class="field">
                     <label class="label">Account Name</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Account Name">
+                        <input class="input" type="text" placeholder="Enter Account Name" name="accountName"  [(ngModel)]="formData.accountName">
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                 <div class="field">
                     <label class="label">Partition Name</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Partition Name">
+                        <input class="input" type="text" placeholder="Enter Partition Name" name = "partitionName" [(ngModel)]="formData.partitionName" >
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@
                 <div class="field">
                     <label class="label">Job Name</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Job Name">
+                        <input class="input" type="text" placeholder="Enter Job Name" name = "jobName" [(ngModel)]="formData.jobName">
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                 <div class="field">
                     <label class="label"> Antecedent</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter  Antecedent">
+                        <input class="input" type="text" placeholder="Enter  Antecedent" name = "antecedent" [(ngModel)]="formData.antecedent">
                     </div>
                 </div>
             </div>
@@ -134,7 +134,7 @@
                 <div class="field">
                     <label class="label">Condition</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Condition">
+                        <input class="input" type="text" placeholder="Enter Condition" name = "condition" [(ngModel)]="formData.condition">
                     </div>
                 </div>
             </div>
@@ -145,7 +145,7 @@
                 <div class="field">
                     <label class="label">Constraint</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Features">
+                        <input class="input" type="text" placeholder="Enter Features" name = "constraint" [(ngModel)]="formData.constraint">
                     </div>
                 </div>
             </div>
@@ -156,7 +156,7 @@
                 <div class="field">
                     <label class="label"> Cores</label>
                     <div class="control">
-                        <input class="input" type="number" min = "0" placeholder=" Number of CPU cores used">
+                        <input class="input" type="number" min = "0" placeholder=" Number of CPU cores used" name = "cores" [(ngModel)]="formData.cores">
                     </div>
                 </div>
             </div>
@@ -171,17 +171,17 @@
         <div class="field has-addons">
             
             <p class="control is-expanded">
-              <input class="input" type="text" placeholder="Enter bytes amount">
+              <input class="input" type="text" placeholder="Enter bytes amount" name = "diskAmount" [(ngModel)]="formData.diskAmount">
             </p>
             
             <p class="control">
-                <span class="select">
-                  <select>
+                <span class="select"  name="diskUnit">
+                  <select [(ngModel)]="formData.diskUnit">
                     <option>bytes</option>
-                    <option>kilo-</option>
-                    <option>mega-</option>
-                    <option>giga-</option>
-                    <option>tera-</option>
+                    <option>kilo</option>
+                    <option>mega</option>
+                    <option>giga</option>
+                    <option>tera</option>
                    
                   </select>
                 </span>
@@ -196,7 +196,7 @@
                 <div class="field">
                     <label class="label"> Exclusive</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Exclusive">
+                        <input class="input" type="text" placeholder="Enter Exclusive" name="exclusive" [(ngModel)]="formData.exclusive"> 
                     </div>
                 </div>
             </div>
@@ -208,7 +208,7 @@
                 <div class="field">
                     <label class="label">Input</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Input">
+                        <input class="input" type="text" placeholder="Enter Input" name="input" [(ngModel)]="formData.input">
                     </div>
                 </div>
             </div>
@@ -220,7 +220,7 @@
                 <div class="field">
                     <label class="label">Output</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Output">
+                        <input class="input" type="text" placeholder="Enter Output" name="output" [(ngModel)]="formData.output">
                     </div>
                 </div>
             </div>
@@ -231,7 +231,7 @@
                 <div class="field">
                     <label class="label">Phase</label>
                     <div class="control">
-                        <input class="input" type="number" placeholder="Enter phase">
+                        <input class="input" type="number" placeholder="Enter phase" name="phase" [(ngModel)]="formData.phase">
                     </div>
                 </div>
             </div>
@@ -242,18 +242,17 @@
         <div class="field has-addons">
             
             <p class="control is-expanded">
-              <input class="input" type="text" placeholder="Enter max amount of memory the process will use">
+              <input class="input" type="text" placeholder="Enter max amount of memory the process will use" name="ramAmount" [(ngModel)]="formData.ramAmount">
             </p>
             
             <p class="control">
                 <span class="select">
-                  <select>
+                  <select name="ramUnit" [(ngModel)]="formData.ramUnit">
                     <option>bytes</option>
-                    <option>kilo-</option>
-                    <option>mega-</option>
-                    <option>giga-</option>
-                    <option>tera-</option>
-                   
+                    <option>kilobytes</option>
+                    <option>megabytes</option>
+                    <option>gigabytes</option>
+                    <option>terabytes</option>
                   </select>
                 </span>
               </p>
@@ -270,7 +269,8 @@
                 <div class="field">
                     <label class="label">Shell</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Shell">
+                        <input class="input" type="text" placeholder="Enter Shell" name="shell" [(ngModel)]="formData.shell">
+                  
                     </div>
                 </div>
             </div>
@@ -281,7 +281,7 @@
                 <div class="field">
                     <label class="label">Site</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Site">
+                        <input class="input" type="text" placeholder="Enter Site" name="site" [(ngModel)]="formData.site">
                     </div>
                 </div>
             </div>
@@ -292,7 +292,7 @@
                 <div class="field">
                     <label class="label">stdOut</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Redirect standard output to file at compute site">
+                        <input class="input" type="text" placeholder="Redirect standard output to file at compute site" name="stdOut" [(ngModel)]="formData.stdOut">
                     </div>
                 </div>
             </div>
@@ -303,7 +303,7 @@
                 <div class="field">
                     <label class="label">stderr</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Redirect standard error to file at compute site">
+                        <input class="input" type="text" placeholder="Redirect standard error to file at compute site" name="stderr" [(ngModel)]="formData.stderr">
                     </div>
                 </div>
             </div>
@@ -314,7 +314,7 @@
                 <div class="field">
                     <label class="label">Tag</label>
                     <div class="control">
-                        <input class="input" type="text" placeholder="Enter Tag">
+                        <input class="input" type="text" placeholder="Enter Tag" name="tag" [(ngModel)]="formData.tag">
                     </div>
                 </div>
             </div>
@@ -329,16 +329,15 @@
         <div class="field has-addons">
             
             <p class="control is-expanded">
-              <input class="input" type="text" placeholder="Enter Time">
+              <input class="input" type="text" placeholder="Enter Time" name="timeAmount" [(ngModel)]="formData.timeAmount">
             </p>
             
             <p class="control">
                 <span class="select">
-                  <select>
-                    <option>Seconds</option>
-                    <option>Hours</option>
-                    <option>Days</option>
-                   
+                  <select name="timeUnit" [(ngModel)]="formData.timeUnit">
+                    <option value="Seconds">Seconds</option>
+                    <option value="Hours">Hours</option>
+                    <option value="Days">Days</option>
                   </select>
                 </span>
               </p>
@@ -350,25 +349,25 @@
     
     
     
-    
+        <div class="columns is-centered">
+            <div class="column is-half is-offset-0.5">
+                <div class="buttons">
+                    <div class="control">
+                        <button  type="submit" class="button is-link mr-6 my-6">Submit</button>
+                    </div>
+                    <div class="control ">
+                        <button class="button is-link mr-6 my-6 is-danger ">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     
     </form>
     
     
     
     
-    <div class="columns is-centered">
-        <div class="column is-half is-offset-0.5">
-            <div class="buttons">
-                <div class="control">
-                    <button class="button is-link mr-6 my-6">Submit</button>
-                </div>
-                <div class="control ">
-                    <button class="button is-link mr-6 my-6 is-danger ">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
+   
     
 </body>
 

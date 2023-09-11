@@ -7,10 +7,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="dashboard.component.css">
-
+   
     <title>Document</title>
 </head>
-
+<router-outlet></router-outlet>
 <body>
 
     <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -80,7 +80,7 @@
     
     
                     <div class="buttons">
-                        <button class="button is-fullwidth">Add Job</button>
+                        <button class="button is-fullwidth" (click)="goToAddJob()">Add Job</button>
                         <button class="button is-fullwidth">View Job Status</button>
                         <button class="button is-fullwidth">Visit Jlab</button> 
                         <button class="button is-fullwidth">More Info</button>
@@ -90,6 +90,7 @@
     
                 </div>
             </div>
+
         </div>
     </div>
   
