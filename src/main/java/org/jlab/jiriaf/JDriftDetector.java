@@ -1,5 +1,11 @@
 package org.jlab.jiriaf;
 
+import com.yahoo.labs.samoa.instances.Instance;
+import moa.classifiers.Classifier;
+import moa.classifiers.core.driftdetection.ADWIN;
+import moa.classifiers.functions.SGD;
+import moa.classifiers.meta.LimAttClassifier;
+
 /**
  * Copyright (c) 2021, Jefferson Science Associates, all rights reserved.
  * See LICENSE.txt file.
@@ -19,32 +25,52 @@ package org.jlab.jiriaf;
 public class JDriftDetector {
 
     private ADWIN adwin;
+    private SGD learner;
 
     public JDriftDetector() {
         adwin = new ADWIN();
+        learner = new SGD();
+        learner.prepareForUse();
+
     }
 
     /**
-     *
      * @param event from a stream
      * @return true if drift is detected
      */
-    public boolean isChanged(int event) {
-        return adwin.setInput(event);
+    public boolean isChanged(double event) {
+        adwin.setInput(event);
+        return adwin.getDetect();
     }
 
-    public void input(double inputValue) {
-        if (adwin == null) {
-            resetLearning();
-        }
+    public void reset(){
+        adwin.resetChange();
+    }
+    public boolean input(double inputValue) {
         double ErrEstim = this.adwin.getEstimation();
-        if(adwin.setInput(inputValue)) {
-            if (adwin.getEstimation() > ErrEstim) {
-                this.isChangeDetected = true;
+        if (adwin.setInput(inputValue)) {
+            return adwin.getEstimation() > ErrEstim;
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        double[] stream = {1.1, 1.1, 1.1, 1.1, 5.1, 1.1, 1.1, 1.1, 6.3, 1.1, 1.1, 1.1, 1020.0, 1.1, 1.1,1.1};
+        JDriftDetector dfd = new JDriftDetector();
+        for (double i : stream) {
+            for (int j = 0; j<20; j++) {
+                if(dfd.isChanged(i)) {
+                    System.out.println("drift detected at " + i);
+                    dfd.reset();
+                }
             }
         }
-        this.isWarningZone = false;
-        this.delay = 0.0;
-        this.estimation = adwin.getEstimation();
+
+        System.out.println(dfd.adwin.getEstimation());
+        System.out.println(dfd.adwin.getBucketsUsed());
+        System.out.println(dfd.adwin.getTotal());
+
     }
 }
+
+

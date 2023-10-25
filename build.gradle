@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'maven-publish'
+    id 'idea'
 }
 
 group 'org.jlab.jiriaf'
@@ -7,13 +9,15 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'nz.ac.waikato.cms.moa:moa-pom:2023.04.0'
+//    implementation 'nz.ac.waikato.cms.moa:moa-pom:2023.04.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 test {
