@@ -1,0 +1,14 @@
+global:
+  scrape_interval: 5s
+  
+
+scrape_configs:
+- job_name: 'prometheus'
+  static_configs:
+  - targets: ['localhost:9090']
+
+  # add process exporter
+- job_name: 'process_exporter'
+  static_configs:
+  - targets: ['localhost:1912', 'localhost:1895']
+  
