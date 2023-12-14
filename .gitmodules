@@ -1,0 +1,3 @@
+[submodule "virtual-kubelet-cmd/src"]
+	path = virtual-kubelet-cmd/src
+	url = https://github.com/tsaie79/virtual-kubelet-cmd.git
