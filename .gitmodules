@@ -1,3 +1,4 @@
-[submodule "virtual-kubelet-cmd/src"]
-	path = virtual-kubelet-cmd/src
+[submodule "virtual-kubelet-cmd/virtual-kubelet-cmd"]
+	path = virtual-kubelet-cmd/virtual-kubelet-cmd
 	url = https://github.com/tsaie79/virtual-kubelet-cmd.git
+	branch = no-vk-container
