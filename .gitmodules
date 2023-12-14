@@ -14,7 +14,3 @@
 	path = virtual-kubelet-cmd/J-proc-exporter
 	url = https://github.com/tsaie79/J-proc-exporter.git
 	branch = pgid
-[submodule "virtual-kubelet-cmd/vk-cmd-swif"]
-	path = virtual-kubelet-cmd/vk-cmd-swif
-	url = https://github.com/tsaie79/vk-cmd-swif.git
-	branch = master
