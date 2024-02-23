@@ -13,3 +13,6 @@
 [submodule "vk/JIRIAF-test-platform"]
 	path = vk/JIRIAF-test-platform
 	url = https://github.com/tsaie79/JIRIAF-test-platform.git
+[submodule "JRM/virtual-kubelet-cmd"]
+	path = JRM/virtual-kubelet-cmd
+	url = https://github.com/tsaie79/virtual-kubelet-cmd.git
