@@ -1,0 +1,35 @@
+
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  .login-card {
+    /* max-width: 600px;  */
+    display: flex;
+    margin: auto;
+    text-align: center;
+    color: white;
+    /* height: auto;  */
+  }
+  mat-card-content {
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+mat-card-title {
+    text-align: center;
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 5px; /* rounded corners*/
+}
+
+mat-card-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
