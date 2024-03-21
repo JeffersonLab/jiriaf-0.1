@@ -1,0 +1,134 @@
+<!-- Nodes Table -->
+<mat-drawer-container autosize>
+  <button type="button" mat-raised-button (click)="drawer.toggle()">
+    NAV
+    <!-- TODO: add toggle icon -->
+  </button>
+  <mat-drawer #drawer class="sidenav" mode="side" >
+    <button mat-raised-button (click)="navToDashBoard()" >Dashboard</button> 
+    <button mat-raised-button (click)="navToJobTable()" >Jobs Table</button>
+    <button mat-raised-button (click)="navToWorkflow()" >Work FLow Form</button> 
+    <button mat-raised-button class="logout" (click)="logout()">log out</button>
+</mat-drawer>
+
+
+  <div class="sidenav-content">
+<!-- <h1>Hello {{currentUserEmail}}, </h1> -->
+    <h2>Table 1. JRM Status Overview</h2>
+    <table mat-table [dataSource]="k8_apiDataSource" class="mat-elevation-z8">
+      <!-- Node Column -->
+      <ng-container matColumnDef="node">
+        <th mat-header-cell *matHeaderCellDef> Job </th>
+        <td mat-cell *matCellDef="let element"> {{element.node}} </td>
+      </ng-container>
+      <!-- totalCpu Column -->
+      <ng-container matColumnDef="totalCpu">
+        <th mat-header-cell *matHeaderCellDef> Total CPU </th>
+        <td mat-cell *matCellDef="let element"> {{element.totalCpu}} </td>
+      </ng-container>
+      <!-- allocatedCpu Column -->
+      <ng-container matColumnDef="allocatedCpu">
+        <th mat-header-cell *matHeaderCellDef> Allocated CPU </th>
+        <td mat-cell *matCellDef="let element"> {{element.allocatedCpu}} </td>
+      </ng-container>
+      <!-- availableCpu Column -->
+      <ng-container matColumnDef="availableCpu">
+        <th mat-header-cell *matHeaderCellDef> Available CPU </th>
+        <td mat-cell *matCellDef="let element"> {{element.availableCpu}} </td>
+      </ng-container>
+      <!-- totalMemory Column -->
+      <ng-container matColumnDef="totalMemory">
+        <th mat-header-cell *matHeaderCellDef> Total Memory </th>
+        <td mat-cell *matCellDef="let element"> {{element.totalMemory}} </td>
+      </ng-container>
+      <!-- allocatedMemory Column -->
+      <ng-container matColumnDef="allocatedMemory">
+        <th mat-header-cell *matHeaderCellDef> Allocated Memory </th>
+        <td mat-cell *matCellDef="let element"> {{element.allocatedMemory}} </td>
+      </ng-container>
+      <!-- availableMemory Column -->
+      <ng-container matColumnDef="availableMemory">
+        <th mat-header-cell *matHeaderCellDef> Available Memory </th>
+        <td mat-cell *matCellDef="let element"> {{element.availableMemory}} </td>
+      </ng-container>
+      <!-- walltime Column -->
+      <ng-container matColumnDef="walltime">
+        <th mat-header-cell *matHeaderCellDef> Walltime </th>
+        <td mat-cell *matCellDef="let element"> {{element.walltime}} </td>
+      </ng-container>
+      <!-- nodetype Column -->
+      <ng-container matColumnDef="nodetype">
+        <th mat-header-cell *matHeaderCellDef> Node Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.nodetype}} </td>
+      </ng-container>
+      <!-- site Column -->
+      <ng-container matColumnDef="site">
+        <th mat-header-cell *matHeaderCellDef> Site </th>
+        <td mat-cell *matCellDef="let element"> {{element.site}} </td>
+      </ng-container>
+      <!-- alivetime Column -->
+      <ng-container matColumnDef="alivetime">
+        <th mat-header-cell *matHeaderCellDef> Alive Time </th>
+        <td mat-cell *matCellDef="let element"> {{element.alivetime}} </td>
+      </ng-container>
+      <!-- status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="k8_apiColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: k8_apiColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+<!-- <div>
+  <h2>Node Metrics</h2>
+  <table mat-table [dataSource]="nodeDataSource" class="mat-elevation-z8"> -->
+    <!-- Node Column -->
+    <!-- <ng-container matColumnDef="node">
+      <th mat-header-cell *matHeaderCellDef> Node </th>
+      <td mat-cell *matCellDef="let element"> {{element.node}} </td>
+    </ng-container> -->
+    <!-- CPU Column -->
+    <!-- <ng-container matColumnDef="cpu">
+      <th mat-header-cell *matHeaderCellDef> CPU </th>
+      <td mat-cell *matCellDef="let element"> {{element.cpu}} </td>
+    </ng-container> -->
+    <!-- Memory Column -->
+    <!-- <ng-container matColumnDef="memory">
+      <th mat-header-cell *matHeaderCellDef> Memory </th>
+      <td mat-cell *matCellDef="let element"> {{element.memory}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="nodeColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: nodeColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div> -->
+
+<!-- Pods Table -->
+<div>
+  <h2>Table 3. Pod Status Overview </h2>
+  <table mat-table [dataSource]="podDataSource" class="mat-elevation-z8">
+    <!-- TODO: Columns definitions for Pods table similar to Nodes table -->
+    <ng-container matColumnDef="pod">
+      <th mat-header-cell *matHeaderCellDef> Pod </th>
+      <td mat-cell *matCellDef="let element"> {{element.pod}} </td>
+    </ng-container>
+    <ng-container matColumnDef="cpu">
+      <th mat-header-cell *matHeaderCellDef> CPU </th>
+      <td mat-cell *matCellDef="let element"> {{element.cpu}} </td>
+    </ng-container>
+    <ng-container matColumnDef="memory">
+      <th mat-header-cell *matHeaderCellDef> Memory </th>
+      <td mat-cell *matCellDef="let element"> {{element.memory}} </td>
+    </ng-container>
+    <!-- TODO: CPU and Memory columns are defined similarly to the Nodes table -->
+
+    <tr mat-header-row *matHeaderRowDef="podColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: podColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+</mat-drawer-container>
