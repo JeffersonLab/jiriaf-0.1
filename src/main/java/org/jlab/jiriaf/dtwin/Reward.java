@@ -6,4 +6,5 @@ public class Reward {
         // Higher throughput and lower latency/error rates yield higher rewards.
         return metric.throughput - metric.latency - metric.errorRate;
     }
+
 }

@@ -10,4 +10,5 @@ public class Metric {
         this.latency = latency;
         this.errorRate = errorRate;
     }
+
 }

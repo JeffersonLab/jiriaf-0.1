@@ -11,4 +11,5 @@ public class WorkflowComponent {
     void updateMetric(Metric metric) {
         this.currentMetric = metric;
     }
+
 }

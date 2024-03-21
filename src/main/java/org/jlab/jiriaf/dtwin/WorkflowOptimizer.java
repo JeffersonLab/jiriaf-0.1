@@ -16,5 +16,4 @@ public class WorkflowOptimizer {
         double reward = Reward.calculateReward(component.currentMetric);
         System.out.println("Reward: " + reward);
     }
-
 }
