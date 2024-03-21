@@ -1,0 +1,51 @@
+<mat-drawer-container autosize>
+    <button type="button" mat-raised-button (click)="drawer.toggle()">
+      NAV
+      <!-- TODO: add toggle icon -->
+    </button>
+    <mat-drawer #drawer class="sidenav" mode="side">
+        <button mat-raised-button (click)="navToDashBoard()" >Dashboard</button> 
+        <button mat-raised-button (click)="navToJobTable()" >Jobs Table</button>
+        <button mat-raised-button (click)="navToWorkflow()" >Work FLow Form</button> 
+        <button mat-raised-button class="logout" (click)="logout()">log out</button>
+        </mat-drawer>
+    <div class="sidenav-content">
+      
+    <form [formGroup]="workflowRequestForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <mat-label>Job Name</mat-label>
+            <input matInput formControlName="jobName">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>cpu</mat-label>
+            <input matInput formControlName="cpu">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Memory</mat-label> 
+            <input matInput formControlName="memory">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Time</mat-label>
+            <input matInput formControlName="time">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Node Type</mat-label>
+            <input matInput formControlName="nodeType">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Site</mat-label>
+            <input matInput formControlName="site">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>App</mat-label>
+            <input matInput formControlName="app">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Job Type</mat-label>
+            <input matInput formControlName="jobType">
+        </mat-form-field>
+        <button mat-raised-button type="submit">Submit</button>
+    </form>
+    </div>
+  </mat-drawer-container>
+  

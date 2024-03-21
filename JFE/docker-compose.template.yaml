@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  client:
+    image: <your-docker-username>/client:latest
+    ports:
+      - "4200:4200"
+    networks:
+      - app-network
+
+  server:
+    image: <your-docker-username>/server:latest
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: "production"
+      CILOGON_CLIENT_ID_FILE: /run/secrets/CILOGON_CLIENT_ID
+      CILOGON_CLIENT_SECRET_FILE: /run/secrets/CILOGON_CLIENT_SECRET
+      DB_URI_FILE: /run/secrets/DB_URI
+      SESSION_SECRET_FILE: /run/secrets/SESSION_SECRET
+    secrets:
+      - CILOGON_CLIENT_ID
+      - CILOGON_CLIENT_SECRET
+      - DB_URI
+      - SESSION_SECRET
+    networks:
+      - app-network
+
+secrets:
+  CILOGON_CLIENT_ID:
+    external: true
+  CILOGON_CLIENT_SECRET:
+    external: true
+  DB_URI:
+    external: true
+  SESSION_SECRET:
+    external: true
+
+networks:
+  app-network:
+    driver: overlay

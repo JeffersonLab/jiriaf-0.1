@@ -1,0 +1,7 @@
+server/node_modules/*
+**/*.vscode
+**/*.js
+server/middleware/jwtMiddleware.js
+**/.env
+docker-compose.yaml
+oidc form.md

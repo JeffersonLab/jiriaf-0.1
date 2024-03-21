@@ -1,0 +1,62 @@
+<mat-drawer-container autosize>
+    <button type="button" mat-raised-button (click)="drawer.toggle()">
+      NAV
+      <!-- TODO: add toggle icon -->
+    </button>
+    <mat-drawer #drawer class="sidenav" mode="side">
+      <button mat-raised-button (click)="navToDashBoard()" >Dashboard</button> 
+      <button mat-raised-button (click)="navToJobTable()" >Jobs Table</button>
+      <button mat-raised-button (click)="navToWorkflow()" >Work FLow Form</button> 
+      <button mat-raised-button class="logout" (click)="logout()">log out</button>
+      </mat-drawer>
+  <div class="sidenav-content">
+  
+<h2>Jobs-Table</h2>
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef> user </mat-header-cell>
+      <mat-cell *matCellDef="let job"> {{job.user}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let job"> {{job.name}} </mat-cell>
+    </ng-container>
+  
+    <ng-container matColumnDef="cpu">
+      <mat-header-cell *matHeaderCellDef> CPU </mat-header-cell>
+      <mat-cell *matCellDef="let job"> {{job.cpu}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="memory">
+      <mat-header-cell *matHeaderCellDef> Memory </mat-header-cell>
+      <mat-cell *matCellDef="let job"> {{job.memory}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="time">
+      <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+      <mat-cell *matCellDef="let job"> {{job.time}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="nodeType">
+      <mat-header-cell *matHeaderCellDef> Node Type </mat-header-cell>
+      <mat-cell *matCellDef="let job"> {{job.nodeType}} </mat-cell> 
+    </ng-container>
+    <ng-container matColumnDef="site">
+      <mat-header-cell *matHeaderCellDef> Site </mat-header-cell>
+      <mat-cell *matCellDef="let job"> {{job.site}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="app">
+        <mat-header-cell *matHeaderCellDef> App </mat-header-cell>
+        <mat-cell *matCellDef="let job"> {{job.app}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="jobType">
+      <mat-header-cell *matHeaderCellDef> Job Type </mat-header-cell>
+      <mat-cell *matCellDef="let job"> {{job.jobType}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+      <mat-cell *matCellDef="let job"> {{job.status}} </mat-cell>
+    </ng-container>
+  
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  </div>
+</mat-drawer-container>
