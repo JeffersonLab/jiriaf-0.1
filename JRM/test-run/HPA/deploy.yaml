@@ -1,0 +1,57 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: http-server
+data:
+  http-server.sh: |
+    #!/bin/bash
+    $SERVER_BIN/server
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: c
+spec:
+  # replicas: 1
+  selector:
+    matchLabels:
+      app: c
+  template:
+    metadata:
+      labels:
+        app: c
+    spec:
+      containers:
+        - name: c1
+          image: http-server
+          command: ["bash"]
+          args: [""]
+          env:
+            - name: SERVER_BIN
+              value: ~/JIRIAF/virtual-kubelet-cmd/test-run/HPA/load
+          volumeMounts:
+            - name: http-server
+              mountPath: stress/job1
+          resources:
+            requests:
+              cpu: "1"
+              memory: "7Mi"
+            limits:
+              cpu: "8"
+              memory: "10Mi"
+
+      volumes:
+        - name: http-server 
+          configMap:
+            name: http-server
+      nodeSelector:
+        kubernetes.io/role: agent
+        kubernetes.io/hostname: vk
+      tolerations:
+        - key: "virtual-kubelet.io/provider"
+          operator: "Equal"
+          value: "mock"
+          effect: "NoSchedule"
+      restartPolicy: Always

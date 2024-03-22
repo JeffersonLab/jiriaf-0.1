@@ -1,0 +1,56 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: direct-stress
+data:
+  stress.sh: |
+    #!/bin/bash
+    stress --timeout $1 --cpu $2 # test memory
+
+---
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: p1
+spec:
+  containers:
+    - name: c1
+      image: direct-stress
+      command: ["bash"]
+      args: ["300", "2"]
+      volumeMounts:
+        - name: direct-stress
+          mountPath: stress/job1
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1Gi
+        requests:
+          cpu: "2"
+          memory: 1Gi
+  volumes:
+    - name: direct-stress 
+      configMap:
+        name: direct-stress
+  nodeSelector:
+    kubernetes.io/role: agent
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: jiriaf.nodetype
+            operator: In
+            values:
+            - "cpu"
+          - key: jiriaf.site
+            operator: In
+            values:
+            - "Local"
+  tolerations:
+    - key: "virtual-kubelet.io/provider"
+      value: "mock"
+      effect: "NoSchedule"
+  restartPolicy: Never

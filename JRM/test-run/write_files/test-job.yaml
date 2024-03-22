@@ -1,0 +1,114 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: direct-stress
+  namespace: test
+data:
+  stress.sh: |
+    #!/bin/bash
+    stress --timeout $1 --cpu $2 --vm $3 --vm-bytes $4 # test memory
+
+---
+
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: docker-stress
+  namespace: test
+data:
+  stress.sh: |
+    #!/bin/bash
+    docker run -d --rm -e NUMBER=$2 -e TIME=$1 jlabtsai/stress:latest
+
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: shifter-stress
+  namespace: test
+data:
+  stress.sh: |
+    #!/bin/bash
+    export NUMBER=$2
+    export TIME=$1
+    shifter --image="jlabtsai/stress:latest" --entrypoint
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: test
+  namespace: test
+data:
+  test.sh: |
+    #!/bin/bash
+    while true; do
+      date
+      sleep 3
+    done
+
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: stress
+  namespace: test
+spec:
+  template:
+    spec:
+      containers:
+        - name: job1
+          image: stress
+          command: ["bash"]
+          args: ["200", "1", "3", "1G"]
+          volumeMounts:
+            - name: stress
+              mountPath: stress/job1
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1Gi
+        - name: job2
+          image: stress 
+          command: ["bash"]
+          args: ["100", "1", "2", "1G"]
+          volumeMounts:
+            - name: stress
+              mountPath: stress/job2
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1Gi
+
+        - name: job3
+          image: stress
+          command: ["bash"]
+          args: []
+          volumeMounts:
+            - name: test
+              mountPath: test
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1Gi
+      volumes:
+        - name: stress
+          configMap:
+            name: shifter-stress
+        - name: test
+          configMap:
+            name: test
+      nodeSelector:
+        kubernetes.io/role: agent
+        kubernetes.io/hostname: vk-nersc
+      tolerations:
+        - key: "virtual-kubelet.io/provider"
+          value: "mock"
+          effect: "NoSchedule"
+      restartPolicy: Never
+  backoffLimit: 4
+  completions: 1

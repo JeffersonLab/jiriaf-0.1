@@ -1,0 +1,88 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: direct-stress
+  namespace: default
+data:
+  stress.sh: |
+    #!/bin/bash
+    echo $workdir
+    stress --timeout $1 --cpu $2 --vm $3 --vm-bytes $4 # test memory
+
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: test
+  namespace: default
+data:
+  data.sh: |
+    #!/bin/bash
+    while true; do
+      date
+      date >> ~/date.out
+      sleep 1
+    done
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: new-test
+spec:
+  template:
+    spec:
+      containers:
+        # - name: job1
+        #   image: direct-stress
+        #   command: ["bash"]
+        #   args: ["300", "1", "1", "1G"]
+        #   volumeMounts:
+        #     - name: direct-stress
+        #       mountPath: stress/job1
+        #   resources:
+        #     limits:
+        #       cpu: "1"
+        #       memory: 1Gi
+        # - name: job2
+        #   image: direct-stress
+        #   command: ["bash"]
+        #   args: ["200", "1", "1", "1G"]
+        #   volumeMounts:
+        #     - name: direct-stress
+        #       mountPath: stress/job2
+        #   resources:
+        #     limits:
+        #       cpu: "1"
+        #       memory: 1Gi
+
+        - name: job3
+          image: test
+          command: ["bash"]
+          args: []
+          volumeMounts:
+            - name: test
+              mountPath: stress/job3
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1Gi
+
+      volumes:
+        - name: direct-stress 
+          configMap:
+            name: direct-stress
+        - name: test
+          configMap:
+            name: test
+      nodeSelector:
+        kubernetes.io/role: agent
+        kubernetes.io/hostname: vk
+      tolerations:
+        - key: "virtual-kubelet.io/provider"
+          value: "mock"
+          effect: "NoSchedule"
+      restartPolicy: Never
+  backoffLimit: 4
+  completions: 1

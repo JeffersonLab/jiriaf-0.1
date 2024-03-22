@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-stress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-stress
+  template:
+    metadata:
+      labels:
+        app: cpu-stress
+    spec:
+      containers:
+      - name: stress-container
+        image: progrium/stress
+        command: ["sh", "-c", "stress --cpu 2 & sleep 600; kill $!"]
+        resources:
+          limits:
+            cpu: "2000m"
+            memory: "1000Mi"
+          requests:
+            cpu: "2000m"
+            memory: "1000Mi"
+      nodeSelector:
+        kubernetes.io/hostname: mylin-worker
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+      restartPolicy: Always
+
+# ---
+
+# apiVersion: autoscaling/v2
+# kind: HorizontalPodAutoscaler
+# metadata:
+#   name: cpu-stress
+#   namespace: default
+# spec:
+#   scaleTargetRef:
+#     apiVersion: apps/v1
+#     kind: Deployment
+#     name: cpu-stress
+#   minReplicas: 1
+#   maxReplicas: 10
+#   metrics:
+#   - type: Resource
+#     resource:
+#       name: cpu
+#       target:
+#         type: Utilization
+#         averageUtilization: 50

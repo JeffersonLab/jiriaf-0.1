@@ -1,0 +1,48 @@
+time="2024-03-21T14:30:00Z" level=info msg="No provider config file provided, using default values"
+time="2024-03-21T14:30:00Z" level=info msg="cpu: 8, memory: 33604538368 (bytes), pods: 1000"
+time="2024-03-21T14:30:00Z" level=info msg="Kubelet API enabled at :10255"
+time="2024-03-21T14:30:00Z" level=info msg="Waiting for controller to be ready" node=vk operatingSystem=linux provider=mock watchedNamespace=
+I0321 14:30:00.813501  247149 reflector.go:287] Starting reflector *v1.Secret (1m0s) from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:30:00.813634  247149 reflector.go:323] Listing and watching *v1.Secret from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:30:00.813638  247149 reflector.go:287] Starting reflector *v1.ConfigMap (1m0s) from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:30:00.813923  247149 reflector.go:323] Listing and watching *v1.ConfigMap from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:30:00.813676  247149 reflector.go:287] Starting reflector *v1.Service (1m0s) from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:30:00.813566  247149 reflector.go:287] Starting reflector *v1.Pod (1m0s) from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:30:00.813966  247149 reflector.go:323] Listing and watching *v1.Service from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:30:00.814109  247149 reflector.go:323] Listing and watching *v1.Pod from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+time="2024-03-21T14:30:00Z" level=info msg="Pod cache in-sync" node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:00Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:00Z" level=info msg="starting workers" node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:00Z" level=info msg="started workers" node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:00Z" level=info msg=Ready node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:05Z" level=info msg="Updating node alive time, aliveTime: 55" method=mock.ConfigureNode
+time="2024-03-21T14:30:05Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:10Z" level=info msg="Updating node alive time, aliveTime: 50" method=mock.ConfigureNode
+time="2024-03-21T14:30:10Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:15Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:15Z" level=info msg="Updating node alive time, aliveTime: 45" method=mock.ConfigureNode
+time="2024-03-21T14:30:20Z" level=info msg="Updating node alive time, aliveTime: 40" method=mock.ConfigureNode
+time="2024-03-21T14:30:20Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:25Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:25Z" level=info msg="Updating node alive time, aliveTime: 35" method=mock.ConfigureNode
+time="2024-03-21T14:30:30Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:30Z" level=info msg="Updating node alive time, aliveTime: 30" method=mock.ConfigureNode
+time="2024-03-21T14:30:35Z" level=info msg="Updating node alive time, aliveTime: 25" method=mock.ConfigureNode
+time="2024-03-21T14:30:35Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:40Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:40Z" level=info msg="Updating node alive time, aliveTime: 20" method=mock.ConfigureNode
+time="2024-03-21T14:30:45Z" level=info msg="Updating node alive time, aliveTime: 15" method=mock.ConfigureNode
+time="2024-03-21T14:30:45Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:50Z" level=info msg="Updating node alive time, aliveTime: 10" method=mock.ConfigureNode
+time="2024-03-21T14:30:50Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:55Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:30:55Z" level=info msg="Updating node alive time, aliveTime: 5" method=mock.ConfigureNode
+time="2024-03-21T14:31:00Z" level=info msg="Updating node alive time, aliveTime: 0" method=mock.ConfigureNode
+time="2024-03-21T14:31:00Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:31:05Z" level=info msg="Updating node alive time, aliveTime: -5" method=mock.ConfigureNode
+time="2024-03-21T14:31:05Z" level=info msg="receive GetPods" method=GetPods node=vk operatingSystem=linux provider=mock watchedNamespace=
+time="2024-03-21T14:31:09Z" level=info msg="shutting down workers" node=vk operatingSystem=linux provider=mock watchedNamespace=
+I0321 14:31:09.159171  247149 reflector.go:293] Stopping reflector *v1.Service (1m0s) from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:31:09.159434  247149 reflector.go:293] Stopping reflector *v1.Pod (1m0s) from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:31:09.159506  247149 reflector.go:293] Stopping reflector *v1.ConfigMap (1m0s) from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231
+I0321 14:31:09.159683  247149 reflector.go:293] Stopping reflector *v1.Secret (1m0s) from pkg/mod/k8s.io/client-go@v0.27.3/tools/cache/reflector.go:231

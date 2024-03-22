@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cpu-stress-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: stress-container
+        image: progrium/stress
+        command: ["sh", "-c", "stress --cpu 2 & sleep 120; kill $!"]
+      nodeSelector:
+        kubernetes.io/hostname: mylin-worker
+      tolerations:
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+      restartPolicy: Never
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: memory-stress-job
+# spec:
+#   template:
+#     spec:
+#       containers:
+#       - name: memory-stress-container
+#         image: progrium/stress
+#         command: ["sh", "-c", "stress --vm 1 --vm-bytes 500M & sleep 120; kill $!"]
+#       nodeSelector:
+#         kubernetes.io/hostname: mylin-control-plane
+#       tolerations:
+#       - key: "node-role.kubernetes.io/master"
+#         operator: "Exists"
+#       restartPolicy: Never
+
