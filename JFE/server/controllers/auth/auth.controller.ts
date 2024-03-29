@@ -1,6 +1,6 @@
 // controllers/auth.controller.ts
 import { Request, Response } from 'express';
-import passport from '../../config/passport/passport.config'; 
+import passport from '../../config/passport.config'; 
 import { exchangeCodeForToken, } from '../../middleware/jwt/jwt.middleware';
 import { get } from 'http';
 import { User } from '../../models/user/user.model';
@@ -51,17 +51,6 @@ export const handleTokenExchange = async (req: Request, res: Response) => {
       res.status(500).send('Failed to exchange code for token');
     }
   };
-// export const currentUser = async (req: Request): Promise<string | null> => {
-//   const token = req.cookies.token.profile;
-//   console.log('Current Token:', token);
-//   if (token) {
-//     const email = await getEmailFromToken(token);
-//     console.log('Current User:', email);
-//     return email; // Authenticated
-//   } else {
-//     return null; // Not authenticated
-//   }
-// }
 
 
   

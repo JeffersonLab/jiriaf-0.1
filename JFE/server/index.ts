@@ -9,8 +9,8 @@ import session from 'express-session';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 // ------------------- Config Imports -------------------
-import cors from './config/cors/cors.config';
-import { initializePassport } from './config/passport/passport.config';
+import cors from './config/cors.config';
+import { initializePassport } from './config/passport.config';
 // import sessionConfig from './config/session/session.config';
 // ------------------- Route Imports -------------------
 import userRoutes from './routes/user/user.routes';
