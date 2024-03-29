@@ -1,17 +1,15 @@
 import axios from 'axios';
 import { User } from '../../models/user/user.model';
 import { jwtDecode } from 'jwt-decode'; 
-import jwt from 'jsonwebtoken';
-
+import {getConfigValue} from '../../util/config.utils'
 export async function exchangeCodeForToken(code: string) {
   const params = new URLSearchParams();
   params.append('grant_type', 'authorization_code');
-  params.append('client_id', process.env.CILOGON_CLIENT_ID as string);
-  params.append('client_secret', process.env.CILOGON_CLIENT_SECRET as string);
+  params.append('client_id', getConfigValue('CILOGON_CLIENT_ID'));
+  params.append('client_secret', getConfigValue('CILOGON_CLIENT_SECRET'));
   params.append('code', code);
-  params.append('redirect_uri', process.env.CILOGON_CALLBACK_URL as string);
+  params.append('redirect_uri', 'http://localhost:3000/auth/cilogon/callback' ); //TODO: for Prod Change this to the actual redirect URI
   params.append('scope', 'openid email profile');
-
   try {
     
     console.log('Exchanging code for token...');
@@ -59,26 +57,3 @@ export async function getUserInfoFromToken(accessToken: string): Promise<{ email
   }
 }
 
-// export async function getEmailFromToken(token: string) {
-//   const decodedToken: { email: string } = jwtDecode(token);
-//   return decodedToken.email;
-// }
-// async function getPublicKey() {
-//   // Example: Fetch the public key from CILogon or your auth server
-//   const response = await axios.get('https://cilogon.org/path/to/public/key');
-//   return response.data; // Adjust based on actual response structure
-// }
-
-// export async function verifyAccessToken(token: string): Promise<any> {
-//   try {
-//     // Optionally, fetch the public key from CILogon if you're verifying JWT signatures
-//     const publicKey = await getPublicKey();
-
-//     // Verify the token
-//     const decoded = jwt.verify(token, publicKey, { algorithms: ['RS256'] }); // Adjust based on actual algorithm
-//     return decoded;
-//   } catch (error) {
-//     console.error('Error verifying access token:', error);
-//     throw error; // Or handle error as needed
-//   }
-// }
