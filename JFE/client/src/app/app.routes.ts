@@ -3,6 +3,7 @@ import { LoginComponent } from './components/login/login.component'
 import { WorkflowFormComponent } from './components/workflow-form/workflow-form.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { JobsTableComponent } from './components/jobs-table/jobs-table.component';
+import { TestButtonsComponent } from './components/api-test-page/api-test-page.component';
 import { AuthGuard } from './guards/auth.guard';
 
 
@@ -12,4 +13,5 @@ import { AuthGuard } from './guards/auth.guard';
     { path: 'workflow-form', component: WorkflowFormComponent, canActivate: [AuthGuard]},
     { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]},
     { path: 'job-table', component: JobsTableComponent, canActivate: [AuthGuard]},
+    { path: 'api-test', component: TestButtonsComponent}
 ];
