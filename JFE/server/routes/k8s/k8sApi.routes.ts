@@ -4,7 +4,7 @@ import {getConfigValue} from '../../util/config.utils';
 
 const kc = new k8s.KubeConfig();
 kc.loadFromDefault();
-const k8sToken = getConfigValue('K8S_CONTEXT');
+const k8sToken = getConfigValue('K8_METRIC_SERVER_TOKEN');
 kc.setCurrentContext(k8sToken);
 const customK8Api = kc.makeApiClient(k8s.CustomObjectsApi);
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
