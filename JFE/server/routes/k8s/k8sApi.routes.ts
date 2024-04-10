@@ -1,61 +1,127 @@
 import * as k8s from '@kubernetes/client-node';
-import { getConfigValue } from '../../util/config.utils';
-import { Router } from 'express';
-import * as fs from 'fs';
+import { Router,Request,Response } from 'express';
+import { NodeMetric, Result } from '../../types/nodeMetric';
+import { KubeConfig, CoreV1Api } from '@kubernetes/client-node';
+
+
 const kc = new k8s.KubeConfig();
+kc.loadFromDefault();
 
-const clusterName = 'kind-jlab-cluster';
-const userName = 'kind-jlab-cluster';
-const contextName = 'kind-jlab-cluster';
-const serverUrl = 'https://127.0.0.1:39901'; 
-
-const clientCertPath = './apiserver/client.crt';
-const clientKeyPath = './apiserver/client.key';
-
-const k8sToken = getConfigValue('K8_METRIC_SERVER_TOKEN');
-const clientCert = fs.readFileSync(clientCertPath, 'utf8');
-const clientKey = fs.readFileSync(clientKeyPath, 'utf8');
-kc.loadFromOptions({
-    clusters: [{
-        name: clusterName,
-        server: serverUrl,
-    
-    }],
-    users: [{
-        name: userName,
-        certData: clientCert,
-        keyData: clientKey,
-        token: k8sToken,
-    }],
-    contexts: [{
-        name: contextName,
-        user: userName,
-        cluster: clusterName,
-    }],
-    currentContext: contextName,
-});
 const customK8Api = kc.makeApiClient(k8s.CustomObjectsApi);
 const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 
 const router = Router();
 
-router.get('/node-metrics', async (req, res) => {
+router.get('/node-metrics', async (_req: Request, res: Response) => {
+    console.log('GET /node-metrics');
     try {
-        const result: any = await customK8Api.listClusterCustomObject('metrics.k8s.io', 'v1beta1', 'nodes');
-        res.send(result.body.items);
+        const nodes = await k8sApi.listNode();
+        console.log('nodes:', nodes);
+        const nodeMetricsPromises = nodes.body.items.map(async node => {
+            const nodeName = node.metadata?.name;
+            const totalCpu = parseCpu(node.status?.allocatable?.cpu ??'UNKNOWN' );
+            const totalMemory = parseMemory(node.status?.allocatable?.memory ?? 'UNKNOWN');
+
+            // Fetch all pods for the current node
+            const pods = await k8sApi.listPodForAllNamespaces(true, undefined, `spec.nodeName=${nodeName}`);
+            let allocatedCpu = 0;
+            let allocatedMemory = 0;
+
+            for (const pod of pods.body.items) {
+                if (pod.status?.phase === 'Running') {
+                    pod.spec?.containers.forEach(container => {
+                        if (container.resources?.requests) {
+                            allocatedCpu += parseCpu(container.resources?.requests.cpu || '0');
+                            allocatedMemory += parseMemory(container.resources.requests.memory || '0');
+                        }
+                    });
+                }
+            }
+
+            const availableCpu = totalCpu - allocatedCpu;
+            const availableMemory = totalMemory - allocatedMemory;
+
+            const walltime = node.metadata?.labels?.['jiriaf.walltime'] ?? 'N/A';
+            const nodetype = node.metadata?.labels?.['jiriaf.nodetype'] || 'N/A';
+            const site = node.metadata?.labels?.['jiriaf.site'] || 'N/A';
+            const alivetime = node.metadata?.labels?.['jiriaf.alivetime'] || 'N/A';
+            const status = node.status?.conditions?.find(condition => condition.type === "Ready")?.status === "True" ? "Ready" : "NotReady";
+            
+            return {
+                node: nodeName,
+                totalCpu: `${totalCpu}`,
+                allocatedCpu: `${allocatedCpu}`,
+                availableCpu: `${availableCpu}`,
+                totalMemory: `${totalMemory}Gi`,
+                allocatedMemory: `${allocatedMemory}Gi`,
+                availableMemory: `${availableMemory}Gi`,
+                walltime,
+                nodetype,
+                site,
+                alivetime,
+                status
+            };
+        });
+
+        const nodeMetrics = await Promise.all(nodeMetricsPromises);
+        res.json(nodeMetrics);
     } catch (err) {
+        console.error('Error fetching node metrics:', err);
         res.status(500).send(`Error fetching node metrics: ${err}`);
     }
 });
 
+function parseCpu(cpuString: string): number {
+    if (cpuString.endsWith('m')) {
+        return parseInt(cpuString, 10) / 1000;
+    }
+    return parseInt(cpuString, 10);
+}
+
+function parseMemory(memoryString: string): number {
+    let memory = 0;
+    console.log('memoryString:', memoryString);
+    if (memoryString.endsWith('Ki')) {
+        memory = parseInt(memoryString, 10) / (1024 * 1024);
+    } else if (memoryString.endsWith('Mi')) {
+        memory = parseInt(memoryString, 10) / 1024;
+    } else if (memoryString.endsWith('Gi')) {
+        memory = parseInt(memoryString, 10);
+    }
+    return memory;
+}
+
+
 router.get('/pod-metrics', async (req, res) => {
     try {
         const result: any = await customK8Api.listClusterCustomObject('metrics.k8s.io', 'v1beta1', 'pods');
-        res.send(result.body.items);
+        const formattedMetrics = result.body.items.map((item: any) => {
+            const podName = item.metadata.name;
+            const containerMetrics = item.containers.map((container: any) => ({
+                cpu: container.usage.cpu, 
+                memory: container.usage.memory, 
+            }));
+            
+            
+            const totalCpu = containerMetrics.reduce((acc: number, curr: any) => acc + parseCpu(curr.cpu), 0);
+            const totalMemory = containerMetrics.reduce((acc: number, curr: any) => acc + parseMemory(curr.memory), 0);
+
+            return {
+                pod: podName,
+                cpu: `${totalCpu.toFixed(3)} cores`, 
+                memory: `${totalMemory.toFixed(3)} Gi`, 
+            };
+        });
+
+        res.json(formattedMetrics);
     } catch (err) {
+        console.error('Error fetching pod metrics:', err);
         res.status(500).send(`Error fetching pod metrics: ${err}`);
     }
 });
+
+
+
 router.post('/deploy-pod', async (req, res) => {
     const { name, args, cpu, memory } = req.body;
     console.log('Deploying pod:', name, args, cpu, memory);
@@ -251,5 +317,24 @@ async function createOrUpdateConfigMap(namespace: string, configMap: k8s.V1Confi
         }
     }
 }
+
+// Route to delete a pod by name
+router.delete('/pods/:podName', async (req: Request, res: Response) => {
+    const podName = req.params.podName;
+    const namespace = 'default'; // Or extract from req.params if namespace is dynamic
+
+    console.log(`Deleting pod: ${podName} from namespace: ${namespace}`);
+
+    try {
+        // Deleting the specified pod
+        const deleteResponse = await k8sApi.deleteNamespacedPod(podName, namespace);
+        console.log('Pod deletion response:', deleteResponse);
+        res.status(200).send(`Pod ${podName} deleted successfully`);
+    } catch (err: any) {
+        console.error(`Failed to delete pod ${podName}:`, err);
+        res.status(500).send(`Error deleting pod ${podName}: ${err.message}`);
+    }
+});
+
 
 export default router;
