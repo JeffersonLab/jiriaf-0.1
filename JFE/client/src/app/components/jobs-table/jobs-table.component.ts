@@ -26,17 +26,9 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class JobsTableComponent implements OnInit {
   displayedColumns: string[] = [
-    // 'user',  // TODO: add user column
-    'user',
-    'name', 
-    'cpu', 
-    'memory', 
-    'time',
-    'nodeType',
-    'site',
-    'app',
-    'jobType',
-    'status'
+    'user', 'name', 'cpu', 'memory', 'time', 'nodeType', 
+    'site', 'app', 'jobType', 
+    'status', 'deploy', 'stop', 'remove'
   ];
   dataSource!: Observable<any[]>;
 
@@ -49,6 +41,18 @@ export class JobsTableComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource = this.workflowsService.getJobs();
   }
+  deployJob(jobId: string): void {
+    console.log(`Deploying job with ID: ${jobId}`);
+  }
+  
+  stopJob(jobId: string): void {
+    console.log(`Stopping job with ID: ${jobId}`);
+  }
+  
+  removeJob(jobId: string): void {
+    console.log(`Removing job with ID: ${jobId}`);
+  }
+  
   navToDashBoard(): void {
     this.router.navigate(['/dashboard'])
   }

@@ -57,6 +57,30 @@
   
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <!-- Deploy Button Column -->
+    <ng-container matColumnDef="deploy">
+      <mat-header-cell *matHeaderCellDef> Deploy </mat-header-cell>
+      <mat-cell *matCellDef="let job">
+        <button mat-button (click)="deployJob(job.id)">Deploy</button>
+      </mat-cell>
+    </ng-container>
+    
+    <!-- Stop Button Column -->
+    <ng-container matColumnDef="stop">
+      <mat-header-cell *matHeaderCellDef> Stop </mat-header-cell>
+      <mat-cell *matCellDef="let job">
+        <button mat-button (click)="stopJob(job.id)">Stop</button>
+      </mat-cell>
+    </ng-container>
+    
+    <!-- Remove Button Column -->
+    <ng-container matColumnDef="remove">
+      <mat-header-cell *matHeaderCellDef> Remove </mat-header-cell>
+      <mat-cell *matCellDef="let job">
+        <button mat-button (click)="removeJob(job.id)">Remove</button>
+      </mat-cell>
+    </ng-container>
+
   </mat-table>
   </div>
 </mat-drawer-container>
