@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { K8MetricsService } from '../../services/k8/vk-api.service';
 
 @Component({
   selector: 'app-test-buttons',
@@ -8,15 +9,17 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TestButtonsComponent {
   private apiUrl = 'http://localhost:3000/api/k8';
+  private k8_Api = new K8MetricsService(this.http);
 
   constructor(private http: HttpClient) { }
 
   getNodeMetrics(): void {
     console.log('Requesting Node Metrics...');
-    this.http.get(`${this.apiUrl}/node-metrics`).subscribe({
-      next: (response) => console.log('Node Metrics:', response),
-      error: (error) => console.error('Error fetching node metrics:', error)
+    this.k8_Api.getNodeMetrics().subscribe({
+      next: (response: any) => console.log('Node Metrics:', response),
+      error: (error: ErrorEvent) => console.error('Error fetching node metrics:', error)
     });
+
   }
 
   getPodMetrics(): void {
