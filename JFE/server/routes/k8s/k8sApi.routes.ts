@@ -16,7 +16,7 @@ router.get('/node-metrics', async (_req: Request, res: Response) => {
     console.log('GET /node-metrics');
     try {
         const nodes = await k8sApi.listNode();
-        console.log('nodes:', nodes);
+        // console.log('nodes:', nodes);
         const nodeMetricsPromises = nodes.body.items.map(async node => {
             const nodeName = node.metadata?.name;
             const totalCpu = parseCpu(node.status?.allocatable?.cpu ??'UNKNOWN' );
@@ -72,15 +72,20 @@ router.get('/node-metrics', async (_req: Request, res: Response) => {
 });
 
 function parseCpu(cpuString: string): number {
-    if (cpuString.endsWith('m')) {
+    // Handle nano-cores (n) - convert nano-cores to cores (1 nano-core = 0.000000001 cores)
+    if (cpuString.endsWith('n')) {
+        return parseInt(cpuString, 10) / 1_000_000;
+    }
+    // Handle milli-cores (m) - convert milli-cores to cores (1 milli-core = 0.001 cores)
+    else if (cpuString.endsWith('m')) {
         return parseInt(cpuString, 10) / 1000;
     }
+    // Default case assumes the value is in cores already
     return parseInt(cpuString, 10);
 }
 
 function parseMemory(memoryString: string): number {
     let memory = 0;
-    console.log('memoryString:', memoryString);
     if (memoryString.endsWith('Ki')) {
         memory = parseInt(memoryString, 10) / (1024 * 1024);
     } else if (memoryString.endsWith('Mi')) {
@@ -249,6 +254,8 @@ router.post('/deploy-pod', async (req, res) => {
     }
 });
 router.post('/remove-pod', async (req, res) => {
+    console.log('POST /remove-pod');
+    // console.log('req.body:', req.body);
     const { name } = req.body;
     console.log('Removing pod:', name);
 
