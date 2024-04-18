@@ -10,42 +10,68 @@
         <button mat-raised-button class="logout" (click)="logout()">log out</button>
         </mat-drawer>
     <div class="sidenav-content">
-      
-    <form [formGroup]="workflowRequestForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="workflowRequestForm" (ngSubmit)="onSubmit()">
         <mat-form-field appearance="fill">
+          <mat-label>Site</mat-label>
+          <mat-select formControlName="site">
+            <mat-option value="NERSC">NERSC</mat-option>
+            <mat-option value="JLAB">JLAB</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <!-- NERSC Form Fields -->
+        <ng-container *ngIf="workflowRequestForm.get('site')?.value === 'NERSC'" [formGroup]="nerscForm">
+          <mat-form-field appearance="fill">
             <mat-label>Job Name</mat-label>
             <input matInput formControlName="jobName">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>cpu</mat-label>
-            <input matInput formControlName="cpu">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Memory</mat-label> 
-            <input matInput formControlName="memory">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Time</mat-label>
-            <input matInput formControlName="time">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Node Type</mat-label>
-            <input matInput formControlName="nodeType">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Site</mat-label>
-            <input matInput formControlName="site">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>App</mat-label>
-            <input matInput formControlName="app">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-            <mat-label>Job Type</mat-label>
-            <input matInput formControlName="jobType">
-        </mat-form-field>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Wall Time</mat-label>
+            <input matInput formControlName="wallTime">
+          </mat-form-field>
+        </ng-container>
+  
+        <!-- JLAB Form Fields -->
+        <ng-container *ngIf="workflowRequestForm.get('site')?.value === 'JLAB'" [formGroup]="jlabForm">
+            <mat-form-field appearance="fill">
+              <mat-label>Job Name</mat-label>
+              <input matInput formControlName="jobName">
+            </mat-form-field>
+          
+            <mat-form-field appearance="fill">
+              <mat-label>CPU</mat-label>
+              <input matInput formControlName="cpu">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Memory</mat-label>
+              <input matInput formControlName="memory">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Time</mat-label>
+              <input matInput formControlName="time">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Node Type</mat-label>
+                <input matInput formControlName="nodeType">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>app</mat-label>
+                <input matInput formControlName="app">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>job Type</mat-label>
+                <input matInput formControlName="jobType">
+            </mat-form-field>
+
+        </ng-container>
+        
         <button mat-raised-button type="submit">Submit</button>
-    </form>
+      </form>
     </div>
   </mat-drawer-container>
   
