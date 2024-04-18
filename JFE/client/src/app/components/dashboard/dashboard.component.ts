@@ -107,8 +107,8 @@ export class DashboardComponent implements OnInit {
       .subscribe(data => {
         this.podDataSource = data.map((pod: any) => ({
           pod: pod.pod,
-          cpu: pod.cpu,
-          memory: pod.memory,
+          cpu: parseFloat(pod.cpu).toFixed(2),
+          memory: parseFloat(pod.memory).toFixed(2),
         }));
         console.log('Pod Metrics Updated:', this.podDataSource);
       }, error => {
