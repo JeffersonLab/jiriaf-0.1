@@ -91,7 +91,19 @@ function parseMemory(memoryString: string): number {
     return memory;
 }
 
-
+router.get('/pod-status', async (req, res) => {
+    const { podName } = req.query;
+    console.log('GET /pod-status', podName);
+    try {
+        const result: any = await k8sApi.listNamespacedPod('default', undefined, undefined, undefined, undefined, `metadata.name=${podName}`);
+        const pod = result.body.items[0];
+        const status = pod.state?.phase;
+        res.json({ status });
+    } catch (err) {
+        console.error('Error fetching pod status:', err);
+        res.status(500).send(`Error fetching pod status: ${err}`);
+    }
+});
 router.get('/pod-metrics', async (req, res) => {
     try {
         const result: any = await customK8Api.listClusterCustomObject('metrics.k8s.io', 'v1beta1', 'pods');
@@ -137,44 +149,95 @@ router.post('/deploy-pod', async (req, res) => {
             name: name, 
             labels: {
                 user: 'user1',
-            },
-            data: {
-                'stress.sh': `#!/bin/bash
-    # Run the Docker container and capture its ID
-    CONTAINER_ID=$(docker run -d --rm -e NUMBER=$2 -e TIME=$1 jlabtsai/stress:latest)
-    # Wait for the container to finish
-    docker wait $CONTAINER_ID`
-            },
+            }
         },
         spec: {
-            containers: [{
-                name: 'c1',
-                image: 'docker-stress',
-                command: ['bash'],
-                args: args,
-                volumeMounts: [{
-                    name: 'docker-stress',
-                    mountPath: 'stress/job1',
-                }],
-                resources: {
-                    limits: {
-                        cpu: cpu,
-                        memory: memory,
-                    },
-                    requests: {
-                        cpu: cpu,
-                        memory: memory,
-                    },
+            containers: [
+                {
+                    name: 'c1',
+                    image: 'docker-stress',
+                    command: ['bash'],
+                    args: [args[0], args[1], `/default/${name}/containers/c1/p`],
+                    volumeMounts: [
+                        {
+                            name: 'docker-stress',
+                            mountPath: '/docker-stress',
+                        }
+                    ],
+                    resources: {
+                        limits: {
+                            cpu: cpu,
+                            memory: `${memory}Gi`
+                        },
+                        requests: {
+                            cpu: cpu,
+                            memory: `${memory}Gi`
+                        },
+                    }
                 },
-            }],
-            volumes: [{
-                name: 'docker-stress',
-                configMap: {
+                {
+                    name: 'c2',
+                    image: 'get-pgid',
+                    command: ['bash'],
+                    args: [`/default/${name}/containers/c1/p`, `/default/${name}/containers/c1/pgid`],
+                    volumeMounts: [
+                        {
+                            name: 'get-pgid',
+                            mountPath: '/get-pgid',
+                        }
+                    ],
+                    resources: {
+                        limits: {
+                            cpu: cpu,
+                            memory: `${memory}Gi`
+                        },
+                        requests: {
+                            cpu: cpu,
+                            memory: `${memory}Gi`
+                        },
+                    }
+                }
+            ],
+            volumes: [
+                {
                     name: 'docker-stress',
+                    configMap: {
+                        name: 'docker-stress',
+                    }
                 },
-            }],
+                {
+                    name: 'get-pgid',
+                    configMap: {
+                        name: 'get-pgid',
+                    }
+                }
+            ],
             restartPolicy: 'Never',
-        },
+            nodeSelector: {
+                "kubernetes.io/role": "agent"
+            },
+            affinity: {
+                nodeAffinity: {
+                    requiredDuringSchedulingIgnoredDuringExecution: {
+                        nodeSelectorTerms: [
+                            {
+                                matchExpressions: [
+                                    { key: "jiriaf.nodetype", operator: "In", values: ["cpu"] },
+                                    { key: "jiriaf.site", operator: "In", values: ["jiriaf"] }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            tolerations: [
+                {
+                    key: "virtual-kubelet.io/provider",
+                    value: "mock",
+                    effect: "NoSchedule"
+                }
+            ]
+        }
     };
 
     try {
@@ -185,6 +248,20 @@ router.post('/deploy-pod', async (req, res) => {
         res.status(500).send(`Error deploying pod: ${err.message}`);
     }
 });
+router.post('/remove-pod', async (req, res) => {
+    const { name } = req.body;
+    console.log('Removing pod:', name);
+
+    try {
+        await k8sApi.deleteNamespacedPod(name, 'default');
+        res.status(200).send(`Pod ${name} removed successfully`);
+    } catch (err: any) {
+        console.error(`Failed to remove pod:`, err);
+        res.status(500).send(`Error removing pod: ${err.message}`);
+    }
+}
+);
+
 router.post('/deploy-pod-with-configmaps', async (req, res) => {
     const { name, args, cpu, memory } = req.body;
 
