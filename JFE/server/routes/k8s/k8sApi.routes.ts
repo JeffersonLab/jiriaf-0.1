@@ -13,7 +13,7 @@ const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
 const router = Router();
 
 router.get('/node-metrics', async (_req: Request, res: Response) => {
-    console.log('GET /node-metrics');
+    // console.log('GET /node-metrics');
     try {
         const nodes = await k8sApi.listNode();
         // console.log('nodes:', nodes);
