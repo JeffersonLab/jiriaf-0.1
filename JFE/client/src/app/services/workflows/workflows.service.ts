@@ -17,4 +17,10 @@ export class WorkflowService {
   getJobs(): Observable<any[]> {
     return this.http.get<any[]>(this.jobsUrl);
   }
+  deleteWorkflowFromDB(workflowID: string): Observable<any> {
+    return this.http.delete(this.apiUrl, { 
+      withCredentials: true,
+      body: { workflowID }
+    });
+  }
 }
