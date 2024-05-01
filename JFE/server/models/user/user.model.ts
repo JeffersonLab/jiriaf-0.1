@@ -1,5 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose';
-
+const roles = ['admin', 'user', 'guest', 'pending'];
 // User interface extending mongoose.Document
 interface IUser extends Document {
   email: string;
@@ -11,7 +11,7 @@ interface IUser extends Document {
 const UserSchema = new mongoose.Schema({
   email: { type: String, required: true },
   pods: { type: [String], required: false, default: [] },
-  role: { type: String, required: true, default: 'PENDING...' },
+  role: { type: String, required: true, default: 'PENDING...', enum: roles},
 });
 
 // Static methods for the User model
@@ -22,6 +22,8 @@ UserSchema.statics.findOrCreate = async function ({ email }): Promise<IUser> {
   }
   return user;
 };
+UserSchema.index({ email: 1 });
+
 UserSchema.statics.findOneByEmail = function (email: string): Promise<IUser | null> {
   return this.findOne({ email }).exec();
 };
