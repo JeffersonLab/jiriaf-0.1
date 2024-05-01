@@ -61,9 +61,9 @@ export class DashboardComponent implements OnInit {
 
     setCurrentUser(): void {
     this.authService.getCurrentUser().then((user) => {
-      console.log('Current user:', user.email);
+      // console.log('Current user:', user.email);
       this.currentUserEmail = user.email;
-      console.log('Current user:', this.currentUserEmail);
+      // console.log('Current user:', this.currentUserEmail);
 
     });
   }
@@ -94,7 +94,7 @@ export class DashboardComponent implements OnInit {
           alivetime: node.alivetime,
           status: node.status,
         }));
-        console.log('Node Metrics Updated:', this.k8_apiDataSource);
+        // console.log('Node Metrics Updated:', this.k8_apiDataSource);
       }, error => {
         console.error('Error polling node metrics:', error);
       });
@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
           cpu: parseFloat(pod.cpu).toFixed(2),
           memory: parseFloat(pod.memory).toFixed(2),
         }));
-        console.log('Pod Metrics Updated:', this.podDataSource);
+        // console.log('Pod Metrics Updated:', this.podDataSource);
       }, error => {
         console.error('Error polling pod metrics:', error);
       });
