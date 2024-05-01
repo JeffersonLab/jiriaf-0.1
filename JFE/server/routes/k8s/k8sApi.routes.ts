@@ -138,31 +138,31 @@ router.get('/pod-metrics', async (req, res) => {
 });
 
 
+router.post('/deploy-pod', async (req: Request, res: Response) => {
+    const { name, args, cpu, memory, image } = req.body;
 
-router.post('/deploy-pod', async (req, res) => {
-    const { name, args, cpu, memory } = req.body;
-    console.log('Deploying pod:', name, args, cpu, memory);
-
-    if (!name) {
-        return res.status(400).send('Pod name is required');
+    if (!name || args.length < 5) {
+        return res.status(400).send('Pod name and arguments are required');
     }
 
+    // Define the manifest for the pod and its related configurations
     const podManifest = {
         apiVersion: 'v1',
         kind: 'Pod',
         metadata: {
-            name: name, 
+            name: name,
             labels: {
-                user: 'user1',
+                app: 'stress-app',
+                user: 'testuser', // TODO: Change hardcoded user tag
             }
         },
         spec: {
             containers: [
                 {
-                    name: 'c1',
-                    image: 'docker-stress',
+                    name: 'stress-container',
+                    image: image,
                     command: ['bash'],
-                    args: [args[0], args[1], `/default/${name}/containers/c1/p`],
+                    args: [`${args[0]}`, `${args[1]}`, `/default/${name}/containers/stress-container/p`],
                     volumeMounts: [
                         {
                             name: 'docker-stress',
@@ -181,24 +181,24 @@ router.post('/deploy-pod', async (req, res) => {
                     }
                 },
                 {
-                    name: 'c2',
+                    name: 'pgid-container',
                     image: 'get-pgid',
                     command: ['bash'],
-                    args: [`/default/${name}/containers/c1/p`, `/default/${name}/containers/c1/pgid`],
+                    args: [`/default/${name}/containers/stress-container/p`, `/default/${name}/containers/stress-container/pgid`],
                     volumeMounts: [
                         {
                             name: 'get-pgid',
                             mountPath: '/get-pgid',
-                        }
+                        },
                     ],
                     resources: {
                         limits: {
                             cpu: cpu,
-                            memory: `${memory}Gi`
+                            memory: `${memory}Gi` //TODO: Change to a fraction of the total memory or a fixed value
                         },
                         requests: {
                             cpu: cpu,
-                            memory: `${memory}Gi`
+                            memory: `${memory}Gi` //TODO: Change to a fraction of the total memory or a fixed value
                         },
                     }
                 }
@@ -245,6 +245,7 @@ router.post('/deploy-pod', async (req, res) => {
         }
     };
 
+    // Try to create the pod in the Kubernetes cluster
     try {
         await k8sApi.createNamespacedPod('default', podManifest);
         res.status(201).send(`Pod ${name} deployed successfully`);
@@ -253,6 +254,7 @@ router.post('/deploy-pod', async (req, res) => {
         res.status(500).send(`Error deploying pod: ${err.message}`);
     }
 });
+
 router.post('/remove-pod', async (req, res) => {
     console.log('POST /remove-pod');
     // console.log('req.body:', req.body);
