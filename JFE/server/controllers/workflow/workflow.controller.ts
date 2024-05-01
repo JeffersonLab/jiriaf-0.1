@@ -26,11 +26,12 @@ export const createWorkflow = async (req: Request, res: Response) => {
       name: req.body.jobName,
       cpu: req.body.cpu,
       memory: req.body.memory,
-      time: req.body.time,
+      wallTime: req.body.wallTime,
       nodeType: req.body.nodeType,
       site: req.body.site,
       app: req.body.app,
       jobType: req.body.jobType,
+      image: req.body.image,
       status: 'pending', // TODO: update dynamically
     });    await workflow.save();
     res.status(201).send(workflow);
@@ -38,3 +39,27 @@ export const createWorkflow = async (req: Request, res: Response) => {
     res.status(400).send(error);
   }
 };
+export const deleteWorkflowFromDB = async (req: Request, res: Response) => { 
+  try { 
+    const id  = req.body.workflowID;
+    console.log('ID:', id);
+    const workflow = await Workflow.findByIdAndDelete(id);
+    if (!workflow) {
+      res.status(404).send('Workflow not found');
+    }
+    res.send(workflow);
+  }
+  catch (error) {
+    res.status(500).send(error);
+}};
+export const deleteAllWorkflowsByUser = async (req: Request, res: Response) => {
+  try {
+    const { user } = req.body;
+    const workflows = await Workflow.deleteMany({ user });
+    res.send(workflows);
+  } catch (error) {
+    res.status
+    (500).send
+    (error);
+}};
+
