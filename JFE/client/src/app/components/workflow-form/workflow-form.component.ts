@@ -55,17 +55,19 @@ export class WorkflowFormComponent implements OnInit {
     });
     this.nerscForm = new FormGroup({
       jobName: new FormControl('', Validators.required),
-      wallTime: new FormControl('', Validators.required)
+      wallTime: new FormControl('', Validators.required),
+      image: new FormControl('', Validators.required),
     });
 
     this.jlabForm = new FormGroup({
       jobName: new FormControl('', Validators.required),
       cpu: new FormControl('', Validators.required),
       memory: new FormControl('', Validators.required),
-      time: new FormControl('', Validators.required),
+      wallTime: new FormControl('', Validators.required),
       nodeType: new FormControl('', Validators.required),
       app: new FormControl('', Validators.required),
-      jobType: new FormControl('', Validators.required)
+      jobType: new FormControl('', Validators.required),
+      image: new FormControl('', Validators.required)
     });
   }
   onSubmit(): void {
