@@ -51,6 +51,11 @@ export class JobsTableComponent implements OnInit {
   
   removeJob(jobId: string): void {
     console.log(`Removing job with ID: ${jobId}`);
+    this.workflowsService.deleteWorkflowFromDB(jobId).subscribe(() => {
+      console.log(`Removed job with ID: ${jobId}`);
+      this.dataSource = this.workflowsService.getJobs();
+    }
+    );
   }
   
   navToDashBoard(): void {
