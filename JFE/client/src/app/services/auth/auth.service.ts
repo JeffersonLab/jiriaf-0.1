@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { firstValueFrom  } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
 
+export class AuthService {
 
   constructor(private http: HttpClient) {
   }
 
-
+  
+  getCurrentUser(): Promise<any> {
+    const url = 'http://localhost:3000/api/user/profile';
+    return this.http.get<any>(url, { withCredentials: true })
+      .toPromise()
+      .then(response => response || null);
+  }
   initiateCILogonLogin(): void {
     // TODO: Prod: update endpoint
     const loginUrl = 'http://localhost:3000/auth/cilogon';
@@ -35,10 +41,5 @@ export class AuthService {
         }
       });
   }
-  getCurrentUser(): Promise<any> {
-    const url = 'http://localhost:3000/api/user/email';
-    return this.http.get<any>(url, { withCredentials: true })
-      .toPromise()
-      .then(response => response || null);
-  }
+
 }
