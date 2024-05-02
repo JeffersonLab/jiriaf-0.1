@@ -33,12 +33,15 @@ export const initializePassport = (app: any) => {
 
   // Session serialization
   passport.serializeUser((user, done) => {
+    console.log('Serializing user:', user);
     done(null, user);
   });
 
   passport.deserializeUser((obj: object, done) => {
+    console.log('Deserializing:', obj);
     done(null, obj);
-  });
+});
+
 
   app.use(passport.initialize());
   app.use(passport.session());

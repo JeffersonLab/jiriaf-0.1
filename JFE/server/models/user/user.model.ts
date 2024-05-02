@@ -1,5 +1,5 @@
 import mongoose, { Document, Model } from 'mongoose';
-const roles = ['admin', 'user', 'guest', 'pending'];
+const roles = ['admin', 'user', 'guest', 'PENDING...'];
 // User interface extending mongoose.Document
 interface IUser extends Document {
   email: string;
