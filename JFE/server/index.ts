@@ -49,9 +49,9 @@ function getConfigValue(key: string): string {
 // ------------------- Config Values -------------------
 const port = process.env.PORT || '3000';
 const dbUri = getConfigValue('DB_URI');
-console.log(`DB_URI: ${dbUri}`);
+// console.log(`DB_URI: ${dbUri}`);
 const sessionSecret = getConfigValue('SESSION_SECRET');
-console.log(`SESSION_SECRET: ${sessionSecret}`);
+// console.log(`SESSION_SECRET: ${sessionSecret}`);
 const app = express();
 // ------------------- Session -------------------
 const sessionConfig = session({
