@@ -19,7 +19,7 @@ import jobRequest from './routes/jobs/jobRequest.routes';
 import sampleRoutes from './routes/sample/sample.route';
 import k8sApi from './routes/k8s/k8sApi.routes';
 // ------------------- Controller Imports -------------------
-import { createUser } from './controllers/user/user.controller';
+// import { createUser } from './controllers/user/user.controller';
 // ------------------- Model Imports -------------------
 import authRoutes from './routes/auth/auth.routes';
 // ------------------- Environment Variables -------------------
@@ -77,6 +77,7 @@ app.use(sessionConfig);
 app.use(cors);
 //------------------- Passport -------------------
 initializePassport(app);
+
 //------------------- Middleware -------------------
 app.use(express.json()); // For parsing application/json
 app.use(cookieParser()); // For parsing cookies
@@ -87,9 +88,17 @@ app.use('/api', userRoutes);
 app.use('/api' , workflowRequests);
 app.use('/api', jobRequest);
 app.use('/api', authRoutes);
-app.post('/users', createUser);
+// app.post('/users', createUser);
 // ------------------- Sample Route -------------------
 app.get('/', sampleRoutes );
+app.get('/test-session-set', (req, res) => {
+  (req.session as any).test = "Hello World";
+  res.send("Session set!");
+});
+
+app.get('/test-session-get', (req, res) => {
+  res.send(`Session value: ${(req.session as any).test}`);
+});
 // ------------------- Error Handling -------------------
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
