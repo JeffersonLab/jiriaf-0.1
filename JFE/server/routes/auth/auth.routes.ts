@@ -4,8 +4,6 @@ import passport from 'passport';
 
 const router = express.Router();
 
-router.post('/login', authController.login);
-// router.get('/currentUser', authController.currentUser);
 // Route for initiating authentication with CILogon
 router.get('/cilogon',
 passport.authenticate('cilogon', { 

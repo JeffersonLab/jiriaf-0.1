@@ -1,22 +1,21 @@
 import express from 'express';
 import * as userController from '../../controllers/user/user.controller';
 // import { ensureAuthenticated } from '../../middleware/auth/auth.middleware';
-import { createUser } from '../../controllers/user/user.controller';
+// import { createUser } from '../../controllers/user/user.controller';
 import { getUserInfoFromToken } from '../../middleware/jwt/jwt.middleware';
 import { Request, Response } from 'express';
 import passport from 'passport';
 
 const router = express.Router();
 
-// router.get('/profile', ensureAuthenticated, userController.getUserProfile);
-router.post('/users', createUser);
-
 router.get('/users', userController.getAllUsers);
+router.post('/user/role', userController.updateUserRole);
+router.post('/user/delete', userController.deleteUser);
 
 router.get('/user/profile', passport.authenticate('session'), (req, res, next) => {
     console.log('Authenticated user:', req.user);
     next();
-  }, userController.getUserProfile);
+  }, userController.getUserRole);
 router.get('/user/email', async (req: Request, res: Response) => {
     const accessToken  = req.cookies.token;
     console.log('Access Token:', accessToken);  
@@ -33,15 +32,5 @@ router.get('/user/email', async (req: Request, res: Response) => {
     }
 });
 
-// Middleware to validate access tokens
-const authenticateAccessToken = (req: express.Request, res: express.Response, next: express.NextFunction): void => {
-    const authHeader: string | undefined = req.headers['authorization'];
-    const token: string | undefined = authHeader && authHeader.split(' ')[1];
-    if (!token) {
-        res.sendStatus(401);
-        return;
-    }    
-    next();    // TODO:  validate the access token
-};
 
 export default router;

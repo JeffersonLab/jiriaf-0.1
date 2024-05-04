@@ -1,43 +1,43 @@
 import { Request, Response } from 'express';
-import { User } from '../../models/user/user.model';
+import { User, IUser} from '../../models/user/user.model';
+import { getUserInfoFromToken } from '../../middleware/jwt/jwt.middleware';
+export const getUserRole = async (req: Request, res: Response ) => {
 
-export const getUserProfile = async (req: Request, res: Response ) => {
-  console.log('Session:', req.session);
-  console.log('req.user:', req.user);
-  console.log('Headers:', req.headers); 
-    try {
-          if (!req.user) {
-              throw new Error('User session not found');
-          }
-        
-        const user = await User.findById((req.user as { id: string }).id); 
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-        const userProfile = {
-          email: user.email,
-          role: user.role,
-        };
-        res.send(userProfile);
-    } catch (error: any) {
-        res.status(500).send(error.message);
-    }
+const accessToken  = req.cookies.token;
+console.log('Access Token:', accessToken);
+if (!accessToken) {
+  return res.status(400).json({ error: 'Access token is required' });
+}
+try {
+  const { email } = await getUserInfoFromToken(accessToken as string);
+  const user = await User.find({email});
+  const role = user[0].role;
+  res.json({ role }); 
+  
+} catch (error) {
+  console.error('Failed to retrieve email:', error);
+  res.status(500).json({ error: 'Failed to retrieve email' });
+}
 };
-
-export const createUser = async (req: Request, res: Response) => {
-  try {  
-    const { email } = req.body;
-    const user = new User({
-      email,
-      pods:  [], // Default to an empty array 
-    });
-
-    await user.save();
-    res.status(201).send(user);
-  } catch (error) {
-    res.status(400).send(error);
+export const updateUserRole = async (req: Request, res: Response) => {
+  const { email, role } = req.body;
+  if (!email || !role) {
+    return res.status(400).json({ error: 'Email and role are required' });
   }
-};
+  try {
+    const user = await User
+      .findOneAndUpdate({ email }, {
+        role
+      }, { new: true });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    console.error('Failed to update user role:', error);
+    res.status(500).json({ error: 'Failed to update user role' });
+  }
+}
 
 // Function to retrieve all users
 export const getAllUsers = async (req: Request, res: Response) => {
@@ -46,5 +46,22 @@ export const getAllUsers = async (req: Request, res: Response) => {
         res.send(users);
     } catch (error: any) {
         res.status(500).send(error.message);
+    }
+};
+// Function to delete a user
+export const deleteUser = async (req: Request, res: Response) => {
+    const { email } = req.body;
+    if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
+    }
+    try {
+        const user = await User.findOneAndDelete({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.json(user);
+    } catch (error) {
+        console.error('Failed to delete user:', error);
+        res.status(500).json({ error: 'Failed to delete user' });
     }
 };

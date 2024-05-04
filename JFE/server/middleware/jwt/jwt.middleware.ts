@@ -14,11 +14,11 @@ export async function exchangeCodeForToken(code: string) {
     
     console.log('Exchanging code for token...');
       const response = await axios.post('https://cilogon.org/oauth2/token', params);
-      console.log('Token Response:', response.data);
+      // console.log('Token Response:', response.data);
       const tokenData = response.data;
       const decodedToken: { email: string } = jwtDecode(tokenData.id_token);
 
-      console.log('Decoded JWT:', decodedToken);
+      // console.log('Decoded JWT:', decodedToken);
       try {
         const user = await User.create({ email: decodedToken.email });
         console.log('User from DB:', user);

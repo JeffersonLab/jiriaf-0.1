@@ -1,5 +1,6 @@
 import passport from 'passport';
 import { Strategy as OpenIDStrategy, VerifyCallback } from 'passport-openidconnect';
+import { User } from '../models/user/user.model';
 import fs from 'fs';
 
 function getConfigValue(key: string): string {
@@ -15,6 +16,7 @@ function getConfigValue(key: string): string {
 }
 
 export const initializePassport = (app: any) => {
+  console.log('Initializing passport...');
   passport.use('cilogon', new OpenIDStrategy({
       issuer: 'https://cilogon.org',
       authorizationURL: 'https://cilogon.org/authorize',
@@ -25,24 +27,16 @@ export const initializePassport = (app: any) => {
       callbackURL: 'http://localhost:3000/auth/cilogon/callback',
       scope: ['openid', 'email', 'profile']
     },
-    (issuer: string, profile: any, done: VerifyCallback) => { 
-      const user = { issuer, profile}; 
-      return done(null, user);
-    }
+    () => {passport.serializeUser((user, done) => {
+      console.log('Serializing user:', user);
+      done(null, user);
+    });
+    
+    passport.deserializeUser((user: typeof User, done) => {
+      console.log('Deserializing:', user);
+      done(null, user);
+    });}
   ));
-
-  // Session serialization
-  passport.serializeUser((user, done) => {
-    console.log('Serializing user:', user);
-    done(null, user);
-  });
-
-  passport.deserializeUser((obj: object, done) => {
-    console.log('Deserializing:', obj);
-    done(null, obj);
-});
-
-
   app.use(passport.initialize());
   app.use(passport.session());
 };
