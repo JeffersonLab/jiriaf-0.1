@@ -9,12 +9,29 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
   }
+  // TODO: Move user service to its own service
+  getAllUsers(): Promise<any> {
+    const url = 'http://localhost:3000/api/users';
+    return firstValueFrom(this.http.get<any>(url, { withCredentials: true }))
+      .then(response => response || null);
+  }
+    // TODO: Move user service to its own service
 
-  
   getCurrentUser(): Promise<any> {
     const url = 'http://localhost:3000/api/user/profile';
-    return this.http.get<any>(url, { withCredentials: true })
-      .toPromise()
+    return firstValueFrom(this.http.get<any>(url, { withCredentials: true }))    
+      .then(response => response || null);
+  }
+  updateRole(email: string, role: string): Promise<any> {
+    const url = 'http://localhost:3000/api/user/role';
+    const body = { email, role };
+    return firstValueFrom(this.http.post<any>(url, body, { withCredentials: true }))
+      .then(response => response || null);
+  }
+  deleteUser(email: string): Promise<any> {
+    const url = 'http://localhost:3000/api/user/delete';
+    const body = { email };
+    return firstValueFrom(this.http.post<any>(url, body, { withCredentials: true }))
       .then(response => response || null);
   }
   initiateCILogonLogin(): void {
