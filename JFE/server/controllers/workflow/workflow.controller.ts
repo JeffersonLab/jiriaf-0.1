@@ -7,7 +7,7 @@ export const createWorkflow = async (req: Request, res: Response) => {
   
     const accessToken  = req.cookies.token;
     let userEmail = '';
-    console.log('Access Token:', accessToken);  
+    // console.log('Access Token:', accessToken);  
     if (!accessToken) {
         return res.status(400).json({ error: 'Access token is required' });
     }

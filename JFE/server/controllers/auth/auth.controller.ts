@@ -20,7 +20,7 @@ export const handleTokenExchange = async (req: Request, res: Response) => {
   
     try {
       const tokenData = await exchangeCodeForToken(code as string);
-      console.log('Token Data:', tokenData);
+      // console.log('Token Data:', tokenData);
       res.cookie('token', tokenData.access_token, {
         httpOnly: true,
         secure: true,
@@ -33,7 +33,7 @@ export const handleTokenExchange = async (req: Request, res: Response) => {
         res.redirect('http://localhost:4200/register-new-user');
       }
       else if(role === 'admin'){
-        res.redirect('http://localhost:4200/admin-panel');
+        res.redirect('http://localhost:4200/dashboard');
       }
       else if(role === 'user'){
         res.redirect('http://localhost:4200/dashboard');

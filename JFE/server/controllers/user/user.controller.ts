@@ -4,7 +4,7 @@ import { getUserInfoFromToken } from '../../middleware/jwt/jwt.middleware';
 export const getUserRole = async (req: Request, res: Response ) => {
 
 const accessToken  = req.cookies.token;
-console.log('Access Token:', accessToken);
+// console.log('Access Token:', accessToken);
 if (!accessToken) {
   return res.status(400).json({ error: 'Access token is required' });
 }

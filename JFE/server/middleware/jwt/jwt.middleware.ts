@@ -43,7 +43,7 @@ export async function getUserInfoFromToken(accessToken: string): Promise<{ email
     });
 
     const userInfo = userInfoResponse.data;
-    console.log('UserInfo:', userInfo);
+    // console.log('UserInfo:', userInfo);
 
   
     if (userInfo && userInfo.email) {

@@ -13,7 +13,7 @@ router.post('/user/role', userController.updateUserRole);
 router.post('/user/delete', userController.deleteUser);
 
 router.get('/user/profile', passport.authenticate('session'), (req, res, next) => {
-    console.log('Authenticated user:', req.user);
+    // console.log('Authenticated user:', req.user);
     next();
   }, userController.getUserRole);
 router.get('/user/email', async (req: Request, res: Response) => {
