@@ -27,7 +27,7 @@ dotenv.config();
 // Determine the environment mode
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
 // For production, secrets are read from Docker secrets using docker swarm
-const isProduction = false;
+const isProduction = true;
 console.log(`Running in ${isProduction ? 'production' : 'development'} mode`);
 
 // TODO: move function to a separate file
