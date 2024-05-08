@@ -67,6 +67,9 @@ export class JobsTableComponent implements OnInit {
   navToWorkflow() {
     this.router.navigate(['/workflow-form']);
   }
+  navToAdminPanel() {
+    this.router.navigate(['/admin-panel']);
+  }
   logout() {
     this.authService.logout();
   }
