@@ -1,14 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { ViewChild } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.service';  // Ensure the path to AuthService is correct
+import { Router } from '@angular/router';
+
+// Material
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ViewChild } from '@angular/core';
+// Services
+import { AuthService } from '../../services/auth/auth.service';  // Ensure the path to AuthService is correct
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule],
+  imports: [
+    MatTableModule,
+    MatPaginatorModule,
+    MatButtonModule,
+    MatSidenavModule
+  ],
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
 })
@@ -17,7 +28,11 @@ export class AdminPanelComponent implements OnInit {
   dataSource: MatTableDataSource<User>;
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) 
+  {
     this.dataSource = new MatTableDataSource<User>([]);
   }
 
@@ -47,6 +62,18 @@ export class AdminPanelComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
     }); 
   })};
+  navToDashBoard(): void {
+    this.router.navigate(['/dashboard'])
+  }
+  navToJobTable(): void {
+    this.router.navigate(['/job-table'])
+  }
+  navToWorkflow() {
+    this.router.navigate(['/workflow-form']);
+  }
+  logout() {
+    this.authService.logout();
+  }
 }
 interface User {
   email: string;
