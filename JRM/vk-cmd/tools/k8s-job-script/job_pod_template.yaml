@@ -1,0 +1,116 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: direct-stress
+data:
+  stress.sh: |
+    #!/bin/bash
+    # stress --timeout $1 --cpu $2 --vm $3 --vm-bytes $4 # test memory
+    stress --timeout $1 --cpu $2 # test memory
+
+---
+
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: docker-stress
+data:
+  stress.sh: |
+    #!/bin/bash
+    docker run -d --rm -e NUMBER=$2 -e TIME=$1 jlabtsai/stress:latest
+
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: shifter-stress
+data:
+  stress.sh: |
+    #!/bin/bash
+    export NUMBER=$2
+    export TIME=$1
+    shifter --image="jlabtsai/stress:latest" --entrypoint
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: test
+data:
+  test.sh: |
+    #!/bin/bash
+    ## Test start of containers:
+    dat
+    # date
+    # Test conflict of start and getpod:
+    sleep $1 && dat
+    # sleep $1 && date
+
+
+---
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  containers:
+    - name: job1
+      image: test
+      command: ["bash"]
+      args: ["10", "2"]
+      volumeMounts:
+        - name: test
+          mountPath: stress/job1
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
+    - name: job2
+      image: shifter-stress
+      command: ["bash"]
+      args: ["10", "2"]
+      volumeMounts:
+        - name: shifter-stress
+          mountPath: stress/job2
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
+  volumes:
+    - name: shifter-stress
+      configMap:
+        name: shifter-stress
+    - name: direct-stress 
+      configMap:
+        name: direct-stress
+    - name: test
+      configMap:
+        name: test
+  nodeSelector:
+    kubernetes.io/role: agent
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: jiriaf.nodetype
+            operator: In
+            values:
+            - "cpu"
+          - key: jiriaf.site
+            operator: In
+            values:
+            - "perlmutter"
+          # - key: jiriaf.alivetime
+          #   operator: Gt
+          #   values:
+          #   - "30"
+  tolerations:
+    - key: "virtual-kubelet.io/provider"
+      value: "mock"
+      effect: "NoSchedule"
+  restartPolicy: Never

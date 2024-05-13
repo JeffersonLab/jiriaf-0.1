@@ -1,0 +1,15 @@
+_fw_name: CommonAdapter
+_fw_q_type: SLURM
+rocket_launch: rlaunch -c /global/homes/j/jlabtsai/opt/fireworks/project/jiriaf/perlmutter
+  singleshot
+nodes: 8
+walltime: 00:30:00
+qos: debug
+constraint: cpu
+account:
+job_name: jiriaf
+logdir: /global/homes/j/jlabtsai/config/logs
+pre_rocket: |
+  conda activate fireworks
+  ssh -NfL 27017:localhost:27017 login04
+post_rocket:
