@@ -49,12 +49,10 @@ Run the `jrm-create-ssh-connections` binary. It is an HTTP server that listens o
 
 Here's what it does:
 
-1. Looks for available ports from `10000` to `19999` on localhost.
+1. Looks for available ports from the assigned port range and IP address.
 2. Runs the commands from `FireWorks/gen_wf.py` to create SSH connections.
 
 **Note:** It considers listening ports as NOT available. So, ensure to delete ports that are not in use anymore when deleting JRMs.
-
-**To-Do:** Add a feature to delete the ports. One can identify the ports by checking the database and searching for the Completed fireworks.
 
 
 ### Step 2: Configure Environment Variables
@@ -66,6 +64,8 @@ The `main.sh` script is responsible for initializing the environment variables r
 - `nodename`: This is the name assigned to the node.
 - `site`: This is the site name.
 - `account`: This is the account number used for allocation at NERSC.
+- `qos`: This is the queue of service. Refer to compute sites for more details.
+- `custom_metrics_ports`: This is the port used for custom metrics. It can be multiple ports separated by space. For example, `8080 8081`.
 
 The script also creates a directory at `$HOME/jrm-launch/logs` to store logs. The path to this directory is saved in the `logs` environment variable.
 
@@ -91,19 +91,41 @@ pkill -f "./start.sh"
 ```
 
 ## Network Map
-Ports used in the JRM deployment:
+The figure below serves as an example to illustrate all the ports and SSH tunnelings utilized in the JRM deployment process.
+
+### Release Ports and Remove nodes in K8s Cluster on local machine
+
+To release the used ports and remove the nodes in K8s cluster on local, we follow these steps:
+
+1. Refer to the `FireWorks` launchpad database. Identify the FireWorks (fws) that are in the `COMPLETED` or `RUNNING` states. Note that some fws might appear as `RUNNING` but are actually lost runs if they have been disconnected from the launchpad for a certain period (`default is 4 hours`).
+
+2. Collect the port numbers from the `spec.ssh_metrics.port` and `spec.ssh_custom_metrics.port.mapped_port` fields.
+
+3. Send a `POST` request to the `jrm-delete-ssh-connections` endpoint. This will delete the ports and remove the nodes in the K8s cluster.
+
+### Ports used in the JRM deployment:
 - `27017`: MongoDB port
 - `8888`: SSH connection port
 - `API_SERVER_PORT`: K8s API server port
-- `10250`: JRM port
+- `10250`: JRM port for metrics server (Select from the available ports in the range of `10000-19999`)
+- `x`: Custom metrics ports (Select from the available ports in the range of `20000-49999`) (optional)
 
-SSH tunnelings:
-On the local machine `JIRIAF2301`, we establish three SSH connections to `login04` on Perlmutter when deploying JRMs:
-1. `27017:localhost:27017` for MongoDB
-2. `API_SERVER_PORT:localhost:API_SERVER_PORT` for K8s API server
-3. `*10250:localhost:KUBELET_PORT` for JRM metrics
+### SSH tunnelings:
+On the local machine `JIRIAF2301`, we establish three essential SSH connections to `login04` on Perlmutter when deploying JRMs:
+1. `ssh -NfR 27017:localhost:27017 login04` for MongoDB
+2. `ssh -NfR API_SERVER_PORT:localhost:API_SERVER_PORT login04` for K8s API server
+3. `ssh -NfL *10250:localhost:10250 login04` for JRM metrics
+4. `ssh -NfL *x:localhost:x login04` for custom metrics (optional)
 
-One the compute node, we establish SSH tunneling for K8s API server and JRM metrics.
+
+One the compute node, we establish an SSH connections to the `login04` on Perlmutter:
+1. `ssh -NfL API_SERVER_PORT:localhost:API_SERVER_PORT login04` for K8s API server
+2. `ssh -NfR *10250:localhost:10250 login04` for JRM metrics
+3. `ssh -NfR x:localhost:8080 login04` for custom metrics. `8080` is the port where the custom metrics are exposed. (optional)
 
 ### Figure
 ![Network Map](markdown/jrm-network.png)
+
+# To-do
+- [x ] Add a feature to delete the ports. One can identify the ports by checking the database and searching for the Completed fireworks.
+- [ ] Automatically generate a prometheus configuration file with mapped ports of custom metrics. This will help in monitoring the custom metrics of JRMs.
