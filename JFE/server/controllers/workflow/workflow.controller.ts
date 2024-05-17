@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Workflow from '../../models/workflow/workflow.model'
 import { getUserInfoFromToken } from '../../middleware/jwt/jwt.middleware';
+import { runScript } from '../fwMain/fw-main.controller';
 
 export const createWorkflow = async (req: Request, res: Response) => {
   try {
@@ -34,6 +35,10 @@ export const createWorkflow = async (req: Request, res: Response) => {
       image: req.body.image,
       status: 'pending', // TODO: update dynamically
     });    await workflow.save();
+    runScript(req, res, () => {
+      res.status(201).send(workflow);
+    });
+    
     res.status(201).send(workflow);
   } catch (error) {
     res.status(400).send(error);
