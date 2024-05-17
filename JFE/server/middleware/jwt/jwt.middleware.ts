@@ -20,7 +20,7 @@ export async function exchangeCodeForToken(code: string) {
 
       // console.log('Decoded JWT:', decodedToken);
       try {
-        const user = await User.create({ email: decodedToken.email });
+        const user = await User.findOrCreate({ email: decodedToken.email });
         console.log('User from DB:', user);
       } catch (dbError) {
         console.error('Error handling user in DB:', dbError);
