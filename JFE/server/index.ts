@@ -18,10 +18,9 @@ import workflowRequests from './routes/workflow/workflow.routes';
 import jobRequest from './routes/jobs/jobRequest.routes';
 import sampleRoutes from './routes/sample/sample.route';
 import k8sApi from './routes/k8s/k8sApi.routes';
-// ------------------- Controller Imports -------------------
-// import { createUser } from './controllers/user/user.controller';
-// ------------------- Model Imports -------------------
 import authRoutes from './routes/auth/auth.routes';
+import fwMainRoutes from './routes/script/fw-main.routes';
+
 // ------------------- Environment Variables -------------------
 dotenv.config();
 // Determine the environment mode
@@ -88,6 +87,7 @@ app.use('/api', userRoutes);
 app.use('/api' , workflowRequests);
 app.use('/api', jobRequest);
 app.use('/api', authRoutes);
+app.use('/api', fwMainRoutes);
 // app.post('/users', createUser);
 // ------------------- Sample Route -------------------
 app.get('/', sampleRoutes );
