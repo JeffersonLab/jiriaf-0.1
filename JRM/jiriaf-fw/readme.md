@@ -65,6 +65,11 @@ The `main.sh` script is responsible for initializing the environment variables r
 - `site`: This is the site name.
 - `account`: This is the account number used for allocation at NERSC.
 - `qos`: This is the queue of service. Refer to compute sites for more details.
+
+- `ssh_remote`: This is the remote machine to establish SSH connections. (see prerequisites)
+- `ssh_remote_proxy`: This is the remote proxy machine to establish SSH connections. (see prerequisites)
+- `ssh_key`: This is the SSH key used to establish SSH connections. (see prerequisites)
+
 - `custom_metrics_ports`: This is the port used for custom metrics. It can be multiple ports separated by space. For example, `8080 8081`.
 
 The script also creates a directory at `$HOME/jrm-launch/logs` to store logs. The path to this directory is saved in the `logs` environment variable.
@@ -124,7 +129,7 @@ One the compute node, we establish an SSH connections to the `login04` on Perlmu
 3. `ssh -NfR x:localhost:8080 login04` for custom metrics. `8080` is the port where the custom metrics are exposed. (optional)
 
 ### Figure
-![Network Map](markdown/jrm-network.png)
+![Network Map](markdown/jrm_launch_map.png)
 
 # To-do
 - [x ] Add a feature to delete the ports. One can identify the ports by checking the database and searching for the Completed fireworks.

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-{{ .Values.Pod.name}}
+  namespace: {{ .Values.Prometheus.namespace}}
+spec:
+  clusterIP: None
+  ports:
+  - name: web
+    port: 9090
+    protocol: TCP
+    targetPort: web
+  selector:
+    app.kubernetes.io/name: prometheus
+    prometheus: {{ .Values.Pod.name}}
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

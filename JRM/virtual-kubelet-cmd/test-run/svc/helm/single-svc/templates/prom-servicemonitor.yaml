@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{.Values.Pod.name}}
+  namespace: {{.Values.Pod.namespace}}
+  labels:
+    app: {{.Values.Pod.name}}
+spec:
+  selector:
+    matchLabels:
+      app: {{.Values.Pod.name}}
+  endpoints: [
+    {{- range $index, $element := .Values.Service }}
+    {{- if $index }},{{ end }}
+    {
+      port: {{ $element.name | quote }},
+      interval: {{ $element.interval | quote }},
+      path: {{ $element.path | quote }}
+    }
+    {{- end }}
+  
+  ]
+  # - port: http1
+  #   interval: 15s
+  #   path: /metrics
+  # - port: http2
+  #   interval: 15s
+  #   path: /metrics

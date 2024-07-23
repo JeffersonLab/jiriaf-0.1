@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.Pod.name}}
+  namespace: {{ .Values.Pod.namespace}}
+  labels:
+    app: {{ .Values.Pod.name}}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.Pod.name}}
+  ports: [{{- range $index, $element := .Values.Service }}
+    {{- if $index }},{{ end }}
+    {
+      name: {{ $element.name | quote }},
+      protocol: {{ $element.protocol | quote }},
+      port: {{ $element.port }},
+      targetPort: {{ $element.targetPort }}
+    }
+    {{- end }}]

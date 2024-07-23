@@ -1,0 +1,25 @@
+Pod:
+  name: sample-exporter2
+  namespace: default
+Service:
+- name: http1
+  protocol: TCP
+  port: 80
+  targetPort: 1123
+  path: /metrics
+  interval: 15s
+- name: http2
+  protocol: TCP
+  port: 81
+  targetPort: 1124
+  path: /metrics
+  interval: 15s
+PersistentVolume:
+  node: mylin-worker
+  path: /var/local-path-provisioner
+  size: 10Gi
+Prometheus:
+  serviceaccount: prometheus-k8s
+  namespace: monitoring
+
+#https://github.com/prometheus-operator/kube-prometheus/blob/main/docs/customizations/monitoring-additional-namespaces.md

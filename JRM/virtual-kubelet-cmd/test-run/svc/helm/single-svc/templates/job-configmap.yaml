@@ -1,0 +1,9 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ .Values.Pod.name}}
+  namespace: {{ .Values.Pod.namespace}}
+data:
+  stress.sh: |
+    #!/bin/bash
+    /workspaces/virtual-kubelet-cmd/test-run/svc/sample_exporter/sample_exporter -port $1
