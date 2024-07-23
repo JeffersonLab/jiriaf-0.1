@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Values.Pod.name}}
+  labels:
+    app: {{ .Values.Pod.name}}
+spec:
+  containers:
+    - name: sample-exporter
+      image: sample-exporter
+      command: ["bash"]
+      args: ["{{ .Values.Service.targetPort }}"]
+      ports:
+        - containerPort: {{ .Values.Service.targetPort }}
+      volumeMounts:
+        - name: sample-exporter
+          mountPath: sample-exporter
+      resources:
+        limits:
+          cpu: "1"
+          memory: 1Gi
+        requests:
+          cpu: "1"
+          memory: 1Gi
+  volumes:
+    - name: sample-exporter 
+      configMap:
+        name: "{{ .Values.Pod.name}}"
+  nodeSelector:
+    kubernetes.io/role: agent
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: jiriaf.nodetype
+            operator: In
+            values:
+            - "cpu"
+          - key: jiriaf.site
+            operator: In
+            values:
+            - "Local"
+  tolerations:
+    - key: "virtual-kubelet.io/provider"
+      value: "mock"
+      effect: "NoSchedule"
+  restartPolicy: Never

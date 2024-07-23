@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: "{{.Values.Pod.name}}"
+  namespace: default
+  labels:
+    app: "{{.Values.Pod.name}}"
+spec:
+  selector:
+    matchLabels:
+      app: "{{.Values.Pod.name}}"
+  endpoints:
+  - port: http
+    interval: 15s
+    path: /metrics

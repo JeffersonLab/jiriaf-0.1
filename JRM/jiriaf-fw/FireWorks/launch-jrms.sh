@@ -26,13 +26,13 @@ fi
 case "$1" in
     add_wf)
         /fw/create_config.sh || { echo "/fw/create_config.sh failed"; exit 1; }
-        python /fw/gen_wf.py
+        python /fw/gen_wf.py add_wf
         ;;
     get_wf)
         lpad -l /fw/util/my_launchpad.yaml get_wflows -t 
         ;;
     delete_wf)
-        lpad -l /fw/util/my_launchpad.yaml delete_wflows -i $2
+        python /fw/gen_wf.py delete_wf --fw_id $2
         ;;
     *)
         handle_invalid_arg

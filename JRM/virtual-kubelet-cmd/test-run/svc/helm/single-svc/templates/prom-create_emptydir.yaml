@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-emptydir-{{ .Values.Pod.name}}
+  namespace: {{ .Values.Pod.namespace}}
+spec:
+  template:
+    spec:
+      containers:
+      - name: my-container
+        image: busybox
+        command: ['sh', '-c', 'mkdir -p {{ .Values.PersistentVolume.path}}/{{ .Values.Pod.name}}']
+        volumeMounts:
+        - name: var-volume
+          mountPath: /var
+      volumes:
+      - name: var-volume
+        hostPath:
+          path: /var
+          type: DirectoryOrCreate
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - {{ .Values.PersistentVolume.node}}
+      restartPolicy: Never

@@ -1,0 +1,90 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: docker-stress
+data:
+  stress.sh: |
+    #!/bin/bash
+    export PGID_FILE=$3
+    docker run -d --rm -e NUMBER=$2 -e TIME=$1 jlabtsai/stress:latest > /dev/null
+    ## find the last container id
+    export CONTAINER_ID=$(docker ps -l -q)
+    docker inspect -f '{{.State.Pid}}' $CONTAINER_ID > $3
+    sleep $1
+
+---
+
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: get-pgid
+data:
+  stress.sh: |
+    #!/bin/bash
+    sleep 3
+    cp $1 $2
+
+---
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: p # Job Name Here
+spec:
+  containers:
+    - name: c1
+      image: docker-stress
+      command: ["bash"]
+      args: ["300", "2", "~/default/p/containers/c1/p"] # Time and cpu should go here
+      volumeMounts:
+        - name: docker-stress
+          mountPath: docker-stress
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1Gi
+        requests:
+          cpu: "1" # Number of CPUs Here as well
+          memory: 1Gi # Memory Here 
+    - name: c2
+      image: get-pgid
+      command: ["bash"]
+      args: ["~/default/p/containers/c1/p", "~/default/p/containers/c1/pgid"] # Time and cpu should go here
+      volumeMounts:
+        - name: get-pgid
+          mountPath: get-pgid
+      resources:
+        limits:
+          cpu: "2"
+          memory: 1Gi
+        requests:
+          cpu: "1" # Number of CPUs Here as well
+          memory: 1Gi # Memory Here 
+  volumes:
+    - name: docker-stress
+      configMap:
+        name: docker-stress
+    - name: get-pgid
+      configMap:
+        name: get-pgid
+  nodeSelector:
+    kubernetes.io/role: agent
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: jiriaf.nodetype
+            operator: In
+            values:
+            - "cpu"
+          - key: jiriaf.site
+            operator: In
+            values:
+            - "Local"
+  tolerations:
+    - key: "virtual-kubelet.io/provider"
+      value: "mock"
+      effect: "NoSchedule"
+  restartPolicy: Never
