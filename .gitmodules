@@ -1,0 +1,9 @@
+[submodule "JRM/jiriaf-virtual-kubelet-cmd"]
+	path = JRM/jiriaf-virtual-kubelet-cmd
+	url = https://github.com/JeffersonLab/jiriaf-virtual-kubelet-cmd.git
+[submodule "JRM/jiriaf-fireworks"]
+	path = JRM/jiriaf-fireworks
+	url = https://github.com/JeffersonLab/jiriaf-fireworks
+[submodule "JRM/jiriaf-test-platform"]
+	path = JRM/jiriaf-test-platform
+	url = https://github.com/JeffersonLab/jiriaf-test-platform.git

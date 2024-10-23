@@ -1,8 +1,0 @@
-Pod:
-  name: sample-exporter1
-
-Service:
-  targetPort: 1122
-
-Nodes:
-  worker: "mylin-worker"
