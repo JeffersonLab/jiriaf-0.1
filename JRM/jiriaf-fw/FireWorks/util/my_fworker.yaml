@@ -1,8 +1,0 @@
-category: perlmutter
-#env: 
-#- name: nodename
-#  value: ersap-node8
-#- name: kubeconfig
-#  value: /global/homes/j/jlabtsai/run-vk/kubeconfig/mylin
-name: perlmutter
-query: '{}'
