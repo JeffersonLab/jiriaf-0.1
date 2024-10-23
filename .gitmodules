@@ -1,0 +1,3 @@
+[submodule "JRM/jiriaf-virtual-kubelet-cmd"]
+	path = JRM/jiriaf-virtual-kubelet-cmd
+	url = https://github.com/JeffersonLab/jiriaf-virtual-kubelet-cmd.git
