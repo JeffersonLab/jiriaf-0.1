@@ -23,5 +23,5 @@ Novelty: While static resource provisioning and dedicated resources (e.g., NERSC
 The ultimate goal is to integrate DOE compute facilities in a way that appears as a single facility to users, eliminating the need for resource request proposals, approvals, or special memberships.
 
 
-## JRM 
+## JIRIAF Resources Manager (JRM)
 Please refer to the repositories in the [JRM](JRM) folder.
